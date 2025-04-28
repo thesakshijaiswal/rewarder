@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+   "scripts": {
+     "dev": "node --env-file=../.env --watch ./src/server.js",
+     "start": "node ./src/server.js"
+   },
+  "keywords": [
+    "Rewarder",
+    "dashboard",
+    "credits",
+    "earning",
+    "creator"
+  ],
+  "author": "Sakshi Jaiswal",
+  "license": "ISC",
+  "description": "Rewarder allows users to manage their profiles, earn credits through daily activities, and explore a personalized content feed. Users can save, share, and report posts, while admins can monitor user activities and manage credit balances easily.",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.14.0"
+  }
+}
