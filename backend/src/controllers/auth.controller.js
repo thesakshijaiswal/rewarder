@@ -7,6 +7,42 @@ const generateToken = (id) => {
   });
 };
 
+export const register = async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User with this email already exists",
+      });
+    }
+
+    const newUser = await User.create({
+      username,
+      email,
+      password,
+    });
+
+    const token = generateToken(newUser._id);
+
+    const user = newUser.toObject();
+    delete user.password;
+
+    res.status(201).json({
+      success: true,
+      token,
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error registering user",
+      error: error.message,
+    });
+  }
+};
+
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
