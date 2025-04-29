@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useContext } from "react";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 const AuthContext = createContext();
 
@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }) => {
         return true;
       } else {
         setError(data.message);
-        toast.error(data.message);
+        toast.error(data.message || "Registration failed");
         return false;
       }
     } catch (error) {
