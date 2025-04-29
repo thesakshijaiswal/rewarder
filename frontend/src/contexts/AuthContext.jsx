@@ -117,6 +117,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+    setUser(null);
+    setIsAuthenticated(false);
+    toast.info("Logged out successfully");
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -127,6 +135,7 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated,
         register,
         login,
+        logout,
       }}
     >
       {children}
