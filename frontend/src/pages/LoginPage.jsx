@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router";
+
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState({});
   const { login, loading } = useAuth();
   const navigate = useNavigate();
 
@@ -14,10 +16,24 @@ const LoginPage = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [e.target.name]: "",
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const newErrors = {};
+    if (!formData.email) newErrors.email = "Email is required";
+    if (!formData.password) newErrors.password = "Password is required";
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     const success = await login(formData);
     if (success) {
       navigate("/dashboard");
@@ -42,7 +58,7 @@ const LoginPage = () => {
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="space-y-4 rounded-md shadow-sm">
+          <div className="space-y-4 rounded-md">
             <div>
               <label htmlFor="email" className="sr-only">
                 Email address
@@ -52,12 +68,17 @@ const LoginPage = () => {
                 name="email"
                 type="email"
                 autoComplete="email"
-                required
-                className="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none"
+                className={`relative block w-full appearance-none rounded-md border px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
+                  errors.email ? "border-red-500" : "border-gray-300"
+                }`}
                 placeholder="Email address"
                 value={formData.email}
                 onChange={handleChange}
               />
+
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+              )}
             </div>
             <div>
               <label htmlFor="password" className="sr-only">
@@ -68,13 +89,23 @@ const LoginPage = () => {
                 name="password"
                 type="password"
                 autoComplete="current-password"
-                required
-                className="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none"
+                className={`relative block w-full appearance-none rounded-md border px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
+                  errors.password ? "border-red-500" : "border-gray-300"
+                }`}
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
               />
+
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+              )}
             </div>
+            {errors.general && (
+              <p className="mt-2 text-center text-sm text-red-600">
+                {errors.general}
+              </p>
+            )}
           </div>
 
           <div>
