@@ -6,7 +6,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token"));
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -21,25 +21,35 @@ export const AuthProvider = ({ children }) => {
             },
           });
 
+          if (response.status === 401) {
+            // Unauthorized, remove token
+            localStorage.removeItem("token");
+            setToken(null);
+            setIsAuthenticated(false);
+            return;
+          }
+
           const data = await response.json();
 
           if (data.success) {
             setUser(data.user);
             setIsAuthenticated(true);
           } else {
+            // Optional: only remove token if token-specific failure
+            console.warn("Token invalid or session expired.");
             localStorage.removeItem("token");
             setToken(null);
             setIsAuthenticated(false);
           }
         } catch (error) {
           console.error("Auth check error:", error);
-          localStorage.removeItem("token");
-          setToken(null);
-          setIsAuthenticated(false);
-        } finally {
-          setLoading(false);
+          // Don't immediately log out unless you know the token is invalid
+          // You can set an error state or try again later
         }
+      } else {
+        setIsAuthenticated(false);
       }
+      setLoading(false);
     };
 
     checkLoggedIn();
