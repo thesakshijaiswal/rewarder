@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 
-const protectRoute = async (req, res, next) => {
+export const protectRoute = async (req, res, next) => {
   try {
     let token;
     if (
@@ -48,4 +48,15 @@ const protectRoute = async (req, res, next) => {
   }
 };
 
-export default protectRoute;
+// admin route protection
+export const restrictTo = (role) => {
+  return (req, res, next) => {
+    if (req.user.role !== role) {
+      return res.status(403).json({
+        success: false,
+        message: "You do not have permission to perform this action",
+      });
+    }
+    next();
+  };
+};
