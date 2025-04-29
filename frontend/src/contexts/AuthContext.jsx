@@ -81,6 +81,42 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const login = async (userData) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        localStorage.setItem("token", data.token);
+        setToken(data.token);
+        setUser(data.user);
+        setIsAuthenticated(true);
+        toast.success("Login successful!");
+        return true;
+      } else {
+        setError(data.message);
+        toast.error(data.message);
+        return false;
+      }
+    } catch (error) {
+      setError("An error occurred during login");
+      toast.error("Login failed. Please try again.");
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -90,6 +126,7 @@ export const AuthProvider = ({ children }) => {
         error,
         isAuthenticated,
         register,
+        login,
       }}
     >
       {children}
