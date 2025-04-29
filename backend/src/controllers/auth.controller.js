@@ -68,7 +68,7 @@ export const login = async (req, res) => {
       !previousLoginDate ||
       previousLoginDate.toDateString() !== new Date().toDateString()
     ) {
-      user.credits += 5;
+      user.credits += 5; //5 cred for daily login
     }
 
     await user.save();
@@ -86,6 +86,30 @@ export const login = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Error logging in",
+      error: error.message,
+    });
+  }
+};
+
+export const getCurrentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error fetching user",
       error: error.message,
     });
   }
