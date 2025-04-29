@@ -22,7 +22,6 @@ const App = () => {
           },
         }}
       />
-      <div className="text-5xl font-extrabold text-amber-600">Rewarder</div>
     </BrowserRouter>
   );
 };
