@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       setError("An error occurred during registration");
-      toast.error("Registration failed. Please try again.");
+      toast.error("Registration failed! Please try again.");
       return false;
     } finally {
       setLoading(false);
@@ -110,7 +110,7 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       setError("An error occurred during login");
-      toast.error("Login failed. Please try again.");
+      toast.error("Login failed! Please try again.");
       return false;
     } finally {
       setLoading(false);
@@ -122,8 +122,10 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setUser(null);
     setIsAuthenticated(false);
-    toast.info("Logged out successfully");
+    toast.info("Logged out successfully!");
   };
+
+  const clearError = () => setError(null);
 
   return (
     <AuthContext.Provider
@@ -136,6 +138,7 @@ export const AuthProvider = ({ children }) => {
         register,
         login,
         logout,
+        clearError,
       }}
     >
       {children}
