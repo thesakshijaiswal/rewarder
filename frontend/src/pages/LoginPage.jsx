@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router";
 import { Branding } from "../components";
+import { IoMailOutline } from "react-icons/io5";
+import { RiLockPasswordLine } from "react-icons/ri";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -61,17 +63,20 @@ const LoginPage = () => {
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4 rounded-md">
-            <div>
+            <div className="relative">
               <label htmlFor="email" className="sr-only">
                 Email address
               </label>
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                <IoMailOutline className="size-5" />
+              </div>
               <input
                 id="email"
                 name="email"
                 type="email"
                 autoComplete="email"
                 className={`relative block w-full appearance-none rounded-md border px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
-                  errors.email ? "border-red-500" : "border-gray-300"
+                  errors.email ? "border-red-500" : "border-gray-300 pl-10"
                 }`}
                 placeholder="Email address"
                 value={formData.email}
@@ -82,17 +87,20 @@ const LoginPage = () => {
                 <p className="mt-1 text-sm text-red-600">{errors.email}</p>
               )}
             </div>
-            <div>
+            <div className="relative">
               <label htmlFor="password" className="sr-only">
                 Password
               </label>
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                <RiLockPasswordLine className="size-5" />
+              </div>
               <input
                 id="password"
                 name="password"
                 type="password"
                 autoComplete="current-password"
                 className={`relative block w-full appearance-none rounded-md border px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
-                  errors.password ? "border-red-500" : "border-gray-300"
+                  errors.password ? "border-red-500" : "border-gray-300 pl-10"
                 }`}
                 placeholder="Password"
                 value={formData.password}

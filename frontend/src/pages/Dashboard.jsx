@@ -13,7 +13,7 @@ const Dashboard = () => {
             Creator Dashboard
           </h1>
           <div className="flex items-center gap-3">
-            <span className="mr-4 text-gray-700">
+            <span className="mr-4 text-gray-700 capitalize">
               Welcome, {user?.username}! ({user?.credits} credits)
             </span>
             <Button

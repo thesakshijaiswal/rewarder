@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router";
 import { Branding } from "../components";
+import { IoMailOutline } from "react-icons/io5";
+import { RiLockPasswordLine } from "react-icons/ri";
+import { FaRegUser } from "react-icons/fa";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -78,15 +81,18 @@ const RegisterPage = () => {
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4 rounded-md">
-            <div>
+            <div className="relative">
               <label htmlFor="username" className="sr-only">
                 Username
               </label>
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                <FaRegUser className="size-5" />
+              </div>
               <input
                 id="username"
                 name="username"
                 type="text"
-                className={`relative block w-full appearance-none rounded-md border px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
+                className={`relative block w-full appearance-none rounded-md border px-3 py-2 pl-10 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
                   errors.username ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Username"
@@ -97,16 +103,19 @@ const RegisterPage = () => {
                 <p className="mt-1 text-sm text-red-600">{errors.username}</p>
               )}
             </div>
-            <div>
+            <div className="relative">
               <label htmlFor="email" className="sr-only">
                 Email
               </label>
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                <IoMailOutline className="size-5" />
+              </div>
               <input
                 id="email"
                 name="email"
                 type="email"
                 autoComplete="email"
-                className={`relative block w-full appearance-none rounded-md border px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
+                className={`relative block w-full appearance-none rounded-md border px-3 py-2 pl-10 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
                   errors.email ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Email address"
@@ -117,16 +126,19 @@ const RegisterPage = () => {
                 <p className="mt-1 text-sm text-red-600">{errors.email}</p>
               )}
             </div>
-            <div>
+            <div className="relative">
               <label htmlFor="password" className="sr-only">
                 Password
               </label>
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                <RiLockPasswordLine className="size-5" />
+              </div>
               <input
                 id="password"
                 name="password"
                 type="password"
                 autoComplete="new-password"
-                className={`relative block w-full appearance-none rounded-md border px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
+                className={`relative block w-full appearance-none rounded-md border px-3 py-2 pl-10 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
                   errors.password ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Password"
@@ -137,16 +149,19 @@ const RegisterPage = () => {
                 <p className="mt-1 text-sm text-red-600">{errors.password}</p>
               )}
             </div>
-            <div>
+            <div className="relative">
               <label htmlFor="confirmPassword" className="sr-only">
                 Confirm Password
               </label>
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                <RiLockPasswordLine className="size-5" />
+              </div>
               <input
                 id="confirmPassword"
                 name="confirmPassword"
                 type="password"
                 autoComplete="new-password"
-                className={`relative block w-full appearance-none rounded-md border px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
+                className={`relative block w-full appearance-none rounded-md border px-3 py-2 pl-10 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
                   errors.confirmPassword ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Confirm Password"
