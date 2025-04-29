@@ -1,19 +1,26 @@
 import { Toaster } from "react-hot-toast";
 import { Route, Routes, Navigate } from "react-router";
 import { AuthProvider } from "./contexts/AuthContext";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
+import { ProtectedRoute } from "./components";
+import { LoginPage, RegisterPage, Dashboard } from "./pages";
 
 const App = () => {
   return (
-    <>
-      <AuthProvider>
-        <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-        </Routes>
-      </AuthProvider>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/login" />} />
+      </Routes>
       <Toaster
         position="top-center"
         toastOptions={{
@@ -24,7 +31,7 @@ const App = () => {
           },
         }}
       />
-    </>
+    </AuthProvider>
   );
 };
 
