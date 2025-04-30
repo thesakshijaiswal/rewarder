@@ -3,6 +3,7 @@ import {
   getCreditBalance,
   getCreditHistory,
   awardProfileCompletion,
+  awardContentInteraction,
 } from "../controllers/credit.controller.js";
 import { protectRoute } from "../middleware/auth.middleware.js";
 
@@ -11,5 +12,6 @@ const router = express.Router();
 router.get("/balance", protectRoute, getCreditBalance);
 router.get("/history", protectRoute, getCreditHistory);
 router.post("/award/profile", protectRoute, awardProfileCompletion);
+router.post("/award/interaction", protectRoute, awardContentInteraction);
 
 export default router;

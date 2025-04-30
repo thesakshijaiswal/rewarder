@@ -68,7 +68,51 @@ export const awardProfileCompletion = async (req, res) => {
     res.status(500).json({
       success: false,
       message:
-        "Unable to process credit rewards at this time. Please try again later.",
+        "Unable to process credit rewards at this time. Please try again later",
+      error: error.message,
+    });
+  }
+};
+
+export const awardContentInteraction = async (req, res) => {
+  try {
+    const { interactionType } = req.body;
+    const creditAmounts = {
+      save: 2,
+      share: 3,
+      report: 1,
+    };
+
+    if (!Object.keys(creditAmounts).includes(interactionType)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid interaction type",
+      });
+    }
+
+    const creditAmount = creditAmounts[interactionType];
+    const user = await User.findById(req.user.id);
+
+    user.credits += creditAmount;
+    await user.save();
+
+    await CreditTransaction.create({
+      user: user._id,
+      amount: creditAmount,
+      type: "content_interaction",
+      description: `Credits awarded for ${interactionType} interaction`,
+    });
+
+    res.status(200).json({
+      success: true,
+      credits: user.credits,
+      message: `${creditAmount} credits awarded for ${interactionType}`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message:
+        "Unable to process credit rewards at this time. Please try again later",
       error: error.message,
     });
   }
