@@ -5,6 +5,7 @@ import { Branding } from "../components";
 import { IoMailOutline } from "react-icons/io5";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegUser } from "react-icons/fa";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +16,8 @@ const RegisterPage = () => {
   });
   const [errors, setErrors] = useState({});
   const { register, loading } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -81,11 +84,11 @@ const RegisterPage = () => {
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4 rounded-md">
-            <div className="relative">
+            <div className="relative mb-8">
               <label htmlFor="username" className="sr-only">
                 Username
               </label>
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+              <div className="pointer-events-none absolute inset-y-0 left-0 z-20 flex items-center pl-3 text-gray-500">
                 <FaRegUser className="size-5" />
               </div>
               <input
@@ -100,14 +103,16 @@ const RegisterPage = () => {
                 onChange={handleChange}
               />
               {errors.username && (
-                <p className="mt-1 text-sm text-red-600">{errors.username}</p>
+                <p className="absolute top-full left-0 mt-1 text-sm text-red-600">
+                  {errors.username}
+                </p>
               )}
             </div>
-            <div className="relative">
+            <div className="relative mb-8">
               <label htmlFor="email" className="sr-only">
                 Email
               </label>
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+              <div className="pointer-events-none absolute inset-y-0 left-0 z-20 flex items-center pl-3 text-gray-500">
                 <IoMailOutline className="size-5" />
               </div>
               <input
@@ -123,20 +128,22 @@ const RegisterPage = () => {
                 onChange={handleChange}
               />
               {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                <p className="absolute top-full left-0 mt-1 text-sm text-red-600">
+                  {errors.email}
+                </p>
               )}
             </div>
-            <div className="relative">
+            <div className="relative mb-8">
               <label htmlFor="password" className="sr-only">
                 Password
               </label>
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+              <div className="pointer-events-none absolute inset-y-0 left-0 z-20 flex items-center pl-3 text-gray-500">
                 <RiLockPasswordLine className="size-5" />
               </div>
               <input
                 id="password"
                 name="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 autoComplete="new-password"
                 className={`relative block w-full appearance-none rounded-md border px-3 py-2 pl-10 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
                   errors.password ? "border-red-500" : "border-gray-300"
@@ -145,21 +152,34 @@ const RegisterPage = () => {
                 value={formData.password}
                 onChange={handleChange}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 z-20 flex items-center pr-3 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? (
+                  <AiOutlineEye className="size-5" />
+                ) : (
+                  <AiOutlineEyeInvisible className="size-5" />
+                )}
+              </button>
               {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+                <p className="absolute top-full left-0 mt-1 text-sm text-red-600">
+                  {errors.password}
+                </p>
               )}
             </div>
-            <div className="relative">
+            <div className="relative mb-8">
               <label htmlFor="confirmPassword" className="sr-only">
                 Confirm Password
               </label>
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+              <div className="pointer-events-none absolute inset-y-0 left-0 z-20 flex items-center pl-3 text-gray-500">
                 <RiLockPasswordLine className="size-5" />
               </div>
               <input
                 id="confirmPassword"
                 name="confirmPassword"
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 autoComplete="new-password"
                 className={`relative block w-full appearance-none rounded-md border px-3 py-2 pl-10 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
                   errors.confirmPassword ? "border-red-500" : "border-gray-300"
@@ -168,8 +188,19 @@ const RegisterPage = () => {
                 value={formData.confirmPassword}
                 onChange={handleChange}
               />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute inset-y-0 right-0 z-20 flex items-center pr-3 text-gray-500 hover:text-gray-700"
+              >
+                {showConfirmPassword ? (
+                  <AiOutlineEye className="size-5" />
+                ) : (
+                  <AiOutlineEyeInvisible className="size-5" />
+                )}
+              </button>
               {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="absolute top-full left-0 mt-1 text-sm text-red-600">
                   {errors.confirmPassword}
                 </p>
               )}
