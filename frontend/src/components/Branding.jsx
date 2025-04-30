@@ -1,8 +1,8 @@
 const Branding = () => {
   return (
-    <h2 className="mt-6 text-center text-3xl font-extrabold text-indigo-500">
+    <h1 className="text-center text-3xl font-extrabold text-indigo-500">
       Rewarder
-    </h2>
+    </h1>
   );
 };
 

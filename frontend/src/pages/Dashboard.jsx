@@ -1,5 +1,5 @@
 import { useAuth } from "../contexts/AuthContext";
-import { Button } from "../components";
+import { Button, Branding } from "../components";
 import { MdOutlineLogout } from "react-icons/md";
 
 const Dashboard = () => {
@@ -9,9 +9,7 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gray-100">
       <header className="bg-white shadow">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-5 px-4 py-6 sm:px-6 md:flex-row lg:px-8">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Creator Dashboard
-          </h1>
+          <Branding />
           <div className="flex items-center gap-3">
             <span className="mr-4 text-gray-700 capitalize">
               Welcome, {user?.username}! ({user?.credits} credits)
@@ -29,6 +27,9 @@ const Dashboard = () => {
 
       <main>
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          <h2 className="mb-5 text-2xl font-bold text-gray-900">
+            Creator Dashboard
+          </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             <div className="rounded-lg bg-white p-6 shadow-md">
               <h2 className="mb-4 text-xl font-semibold">Credits</h2>
