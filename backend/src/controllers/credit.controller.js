@@ -117,3 +117,45 @@ export const awardContentInteraction = async (req, res) => {
     });
   }
 };
+
+//adminAction
+export const adjustUserCredits = async (req, res) => {
+  try {
+    const { userId, amount, description } = req.body;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    user.credits += parseInt(amount);
+    await user.save();
+
+    await CreditTransaction.create({
+      user: user._id,
+      amount,
+      type: "admin_adjustment",
+      description: description || `Admin adjustment of ${amount} credits`,
+    });
+
+    res.status(200).json({
+      success: true,
+      user: {
+        id: user._id,
+        username: user.username,
+        credits: user.credits,
+      },
+      message: `Successfully adjusted credits for ${user.username}`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message:
+        "Failed to update user's credit balance. Please try again later.",
+      error: error.message,
+    });
+  }
+};
