@@ -3,16 +3,21 @@ import { useAuth } from "../contexts/AuthContext";
 import { Button, Branding } from "../components";
 import { FeedList } from "../components/feed";
 import { MdOutlineLogout, MdArrowBack } from "react-icons/md";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import api from "../services/api";
 
 const SavedPosts = () => {
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [savedPosts, setSavedPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+
+  const handleBack = () => {
+    navigate("/dashboard");
+  };
 
   const fetchSavedPosts = async (page = 1, replaceExisting = true) => {
     try {
@@ -78,13 +83,13 @@ const SavedPosts = () => {
       <main>
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <div className="mb-6 flex items-center">
-            <Link
-              to="/dashboard"
-              className="mr-4 flex items-center text-indigo-600 hover:text-indigo-800"
+            <Button
+              onClick={handleBack}
+              className="mr-4 flex items-center bg-slate-800 text-white hover:bg-slate-700"
+              btnIcon={MdArrowBack}
             >
-              <MdArrowBack className="mr-1" />
-              Back to Dashboard
-            </Link>
+              Back
+            </Button>
             <h2 className="text-2xl font-bold text-gray-900">Saved Posts</h2>
           </div>
 
