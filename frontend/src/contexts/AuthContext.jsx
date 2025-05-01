@@ -22,7 +22,6 @@ export const AuthProvider = ({ children }) => {
           });
 
           if (response.status === 401) {
-            // Unauthorized, remove token
             localStorage.removeItem("token");
             setToken(null);
             setIsAuthenticated(false);
@@ -35,7 +34,6 @@ export const AuthProvider = ({ children }) => {
             setUser(data.user);
             setIsAuthenticated(true);
           } else {
-            // Optional: only remove token if token-specific failure
             console.warn("Token invalid or session expired.");
             localStorage.removeItem("token");
             setToken(null);
@@ -43,8 +41,6 @@ export const AuthProvider = ({ children }) => {
           }
         } catch (error) {
           console.error("Auth check error:", error);
-          // Don't immediately log out unless you know the token is invalid
-          // You can set an error state or try again later
         }
       } else {
         setIsAuthenticated(false);
