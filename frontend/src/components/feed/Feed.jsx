@@ -4,7 +4,7 @@ import FeedList from "./FeedList";
 import SourceFilter from "./SourceFilter";
 import { FaRedoAlt } from "react-icons/fa";
 import { Button } from "../../components";
-import api from "../../../../backend/src/services/api";
+import api from "../../services/api";
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
