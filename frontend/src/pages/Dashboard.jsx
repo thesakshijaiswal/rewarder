@@ -1,7 +1,8 @@
 import { useAuth } from "../contexts/AuthContext";
 import { Button, Branding } from "../components";
 import { Feed } from "../components/feed";
-import { MdOutlineLogout } from "react-icons/md";
+import { MdOutlineLogout, MdBookmark } from "react-icons/md";
+import { Link } from "react-router";
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
@@ -28,9 +29,19 @@ const Dashboard = () => {
 
       <main>
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <h2 className="mb-5 text-2xl font-bold text-gray-900">
-            Creator Dashboard
-          </h2>
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-gray-900">
+              Creator Dashboard
+            </h2>
+            <Link
+              to="/saved-posts"
+              className="flex items-center rounded-md bg-slate-800 px-4 py-2 text-white hover:bg-slate-700"
+            >
+              <MdBookmark className="mr-2" />
+              Saved Posts
+            </Link>
+          </div>
+
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <div className="rounded-lg bg-white p-6 shadow-md">
               <h2 className="mb-4 text-xl font-semibold">Credits</h2>
