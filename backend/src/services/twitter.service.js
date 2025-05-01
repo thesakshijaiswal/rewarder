@@ -2,27 +2,18 @@ import Post from "../models/post.model.js";
 import axios from "axios";
 
 const TWITTER_BEARER_TOKEN = process.env.TWITTER_BEARER_TOKEN;
-const RATE_LIMIT_BUFFER = 10; // Number of requests to keep as buffer
+const RATE_LIMIT_BUFFER = 10;
 
-// Rate limit tracking
-let rateLimitRemaining = 180; // Twitter's default rate limit
+let rateLimitRemaining = 180;
 let rateLimitReset = null;
 
-/**
- * Fetches tweets from Twitter API v2
- * @param {string} query - Search query for tweets
- * @param {number} count - Number of tweets to fetch
- * @returns {Array} - Array of tweets formatted as Post objects
- */
 export const fetchTweets = async (query = "tech", count = 10) => {
   try {
-    // Check rate limits before making request
     if (rateLimitRemaining < RATE_LIMIT_BUFFER) {
       console.warn("Rate limit low, using mock data");
       return getMockTweets(query, count);
     }
 
-    // Validate bearer token
     if (!TWITTER_BEARER_TOKEN) {
       console.error("Twitter API bearer token is missing");
       return getMockTweets(query, count);
@@ -46,7 +37,6 @@ export const fetchTweets = async (query = "tech", count = 10) => {
       }
     );
 
-    // Update rate limit info
     rateLimitRemaining = parseInt(
       response.headers["x-rate-limit-remaining"] || rateLimitRemaining
     );
@@ -63,19 +53,16 @@ export const fetchTweets = async (query = "tech", count = 10) => {
 
     const data = response.data;
 
-    // Handle empty response
     if (!data.data || data.data.length === 0) {
       console.log("No tweets found for query:", query);
       return [];
     }
 
-    // Create user lookup map
     const users = (data.includes?.users || []).reduce((acc, user) => {
       acc[user.id] = user;
       return acc;
     }, {});
 
-    // Format tweets
     const posts = data.data.map((tweet) => {
       const user = users[tweet.author_id] || {
         username: "unknown",
@@ -93,14 +80,12 @@ export const fetchTweets = async (query = "tech", count = 10) => {
       error.response?.data || error.message
     );
 
-    // Handle rate limit error specifically
     if (error.response?.status === 429) {
       console.warn("Twitter API rate limit exceeded, using mock data");
       rateLimitRemaining = 0;
       return getMockTweets(query, count);
     }
 
-    // For development, fall back to mock data
     if (process.env.NODE_ENV === "development") {
       console.log("Using mock tweets for development");
       return getMockTweets(query, count);
@@ -110,12 +95,6 @@ export const fetchTweets = async (query = "tech", count = 10) => {
   }
 };
 
-/**
- * Format a tweet as a Post object
- * @param {Object} tweet - Tweet data from Twitter API
- * @param {Object} user - User data from Twitter API
- * @returns {Object} - Formatted post object
- */
 const formatTweetAsPost = (tweet, user) => ({
   title: `Tweet by ${user.name} (@${user.username})`,
   content: tweet.text,
@@ -129,9 +108,6 @@ const formatTweetAsPost = (tweet, user) => ({
   metrics: tweet.public_metrics || {},
 });
 
-/**
- * Generate mock tweets for development/testing
- */
 const getMockTweets = (query, count) => {
   const topics = {
     tech: ["AI", "Programming", "Web Dev", "Cloud Computing", "Cybersecurity"],
@@ -169,9 +145,6 @@ const getMockTweets = (query, count) => {
     }));
 };
 
-/**
- * Store tweets in database
- */
 export const storeTweets = async (tweets) => {
   try {
     if (!tweets || tweets.length === 0) {
@@ -198,12 +171,8 @@ export const storeTweets = async (tweets) => {
   }
 };
 
-/**
- * Get a single tweet by ID
- */
 export const getTweetById = async (tweetId) => {
   try {
-    // First try to get from database
     const existingPost = await Post.findOne({
       originalId: tweetId,
       source: "twitter",
