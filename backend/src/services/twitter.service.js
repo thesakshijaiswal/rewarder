@@ -28,7 +28,7 @@ export const fetchTweets = async (query = "tech", count = 10) => {
         },
         params: {
           query: query,
-          max_results: Math.min(count, 100),
+          max_results: Math.max(10, Math.min(count, 100)),
           "tweet.fields": "created_at,author_id,public_metrics,entities",
           expansions: "author_id,attachments.media_keys",
           "user.fields": "name,username,profile_image_url,verified",
