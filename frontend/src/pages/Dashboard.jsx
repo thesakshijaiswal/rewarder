@@ -1,5 +1,6 @@
 import { useAuth } from "../contexts/AuthContext";
 import { Button, Branding } from "../components";
+import { Feed } from "../components/feed";
 import { MdOutlineLogout } from "react-icons/md";
 
 const Dashboard = () => {
@@ -30,15 +31,15 @@ const Dashboard = () => {
           <h2 className="mb-5 text-2xl font-bold text-gray-900">
             Creator Dashboard
           </h2>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <div className="rounded-lg bg-white p-6 shadow-md">
               <h2 className="mb-4 text-xl font-semibold">Credits</h2>
               <div className="text-3xl font-bold text-indigo-600">
                 {user?.credits}
               </div>
               <p className="mt-2 text-gray-600">
-                Earn more credits by completing your profile and logging in
-                daily.
+                Earn more credits by completing your profile and interacting
+                with content.
               </p>
             </div>
 
@@ -70,11 +71,8 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="mt-8 rounded-lg bg-white p-6 shadow-md">
-            <h2 className="mb-4 text-xl font-semibold">Your Feed</h2>
-            <p className="text-gray-600">
-              Content feed will be displayed here soon.
-            </p>
+          <div className="mt-8">
+            <Feed />
           </div>
         </div>
       </main>
