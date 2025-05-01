@@ -49,17 +49,17 @@ const FeedItem = ({ post, onSave, onUnsave, onShare, onReport, saved }) => {
 
   return (
     <div className="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-      <div className="mb-2 flex items-center">
+      <div className="mb-2 flex flex-wrap items-start gap-2 sm:flex-nowrap sm:items-center">
         {post.imageUrl && (
           <img
             src={post.imageUrl}
             alt={post.author}
-            className="mr-2 h-8 w-8 rounded-full"
+            className="h-8 w-8 rounded-full"
           />
         )}
-        <div>
-          <h3 className="font-semibold">{post.title}</h3>
-          <div className="flex gap-2 text-xs text-gray-500">
+        <div className="min-w-0">
+          <h3 className="text-sm font-semibold sm:text-base">{post.title}</h3>
+          <div className="flex flex-wrap gap-1 text-xs text-gray-500 sm:gap-2">
             <span>{post.author}</span>
             <span>•</span>
             <span>{getRelativeTime(post.createdAt)}</span>
@@ -69,13 +69,15 @@ const FeedItem = ({ post, onSave, onUnsave, onShare, onReport, saved }) => {
         </div>
       </div>
 
-      <p className="mb-3 text-gray-700">{post.content}</p>
+      <p className="mb-3 text-sm break-words text-gray-700 sm:text-base">
+        {post.content}
+      </p>
 
-      <div className="flex justify-between">
-        <div className="flex gap-4">
+      <div className="flex flex-wrap justify-between gap-2 sm:gap-4">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-4">
           <button
             onClick={handleSaveToggle}
-            className="flex items-center gap-1 text-sm text-gray-600 hover:text-indigo-600"
+            className="flex items-center gap-1 text-xs text-gray-600 hover:text-indigo-600 sm:text-sm"
           >
             {saved ? (
               <>
@@ -90,14 +92,14 @@ const FeedItem = ({ post, onSave, onUnsave, onShare, onReport, saved }) => {
 
           <button
             onClick={handleShare}
-            className="flex items-center gap-1 text-sm text-gray-600 hover:text-indigo-600"
+            className="flex items-center gap-1 text-xs text-gray-600 hover:text-indigo-600 sm:text-sm"
           >
             <FaShare /> Share
           </button>
 
           <button
             onClick={() => setShowReportModal(true)}
-            className="flex items-center gap-1 text-sm text-gray-600 hover:text-red-600"
+            className="flex items-center gap-1 text-xs text-gray-600 hover:text-red-600 sm:text-sm"
           >
             <FaFlag /> Report
           </button>
@@ -107,9 +109,9 @@ const FeedItem = ({ post, onSave, onUnsave, onShare, onReport, saved }) => {
           href={post.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm text-indigo-600 hover:underline"
+          className="text-xs text-indigo-600 hover:underline sm:text-sm"
         >
-          View Original
+          View Post
         </a>
       </div>
 

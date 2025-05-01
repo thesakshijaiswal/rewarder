@@ -142,7 +142,7 @@ const Feed = () => {
         <Button
           onClick={refreshFeed}
           disabled={refreshing}
-          className="flex items-center gap-2 bg-indigo-600 text-white hover:bg-indigo-700"
+          className="flex items-center gap-2 bg-indigo-600 whitespace-nowrap text-white hover:bg-indigo-700"
         >
           <FaRedoAlt className={refreshing ? "animate-spin" : ""} />
           {refreshing ? "Refreshing..." : "Refresh Feed"}
