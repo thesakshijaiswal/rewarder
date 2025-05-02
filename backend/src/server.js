@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth.route.js";
 import creditRoutes from "./routes/credit.route.js";
 import feedRoutes from "./routes/feed.route.js";
 import profileRoutes from "./routes/profile.route.js";
+import adminRoutes from "./routes/admin.route.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -16,6 +17,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/credits", creditRoutes);
 app.use("/api/feed", feedRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.get("/", (req, res) => {
   res.send("Server is Running 🟢");
