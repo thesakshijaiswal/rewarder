@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Button, Branding, Avatar } from "../components";
 import { Feed } from "../components/feed";
@@ -8,6 +9,12 @@ import { MdArrowForward } from "react-icons/md";
 const Dashboard = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user?.role === "admin") {
+      navigate("/admin");
+    }
+  }, [user, navigate]);
 
   return (
     <div className="min-h-screen bg-gray-100">
