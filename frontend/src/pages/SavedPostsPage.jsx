@@ -6,7 +6,7 @@ import { MdOutlineLogout, MdArrowBack } from "react-icons/md";
 import { Link, useNavigate } from "react-router";
 import api from "../services/api";
 
-const SavedPosts = () => {
+const SavedPostsPage = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [savedPosts, setSavedPosts] = useState([]);
@@ -134,4 +134,4 @@ const SavedPosts = () => {
   );
 };
 
-export default SavedPosts;
+export default SavedPostsPage;

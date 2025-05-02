@@ -64,7 +64,6 @@ export const getProfile = async (req, res) => {
       username: user.username,
     };
 
-    // Check profileCompleted based on nested profile fields
     const profileCompleted = Boolean(
       user.profile?.name && user.profile?.bio && user.profile?.avatar
     );

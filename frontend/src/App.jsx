@@ -2,7 +2,13 @@ import { Toaster } from "react-hot-toast";
 import { Route, Routes, Navigate } from "react-router";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ProtectedRoute } from "./components";
-import { LoginPage, RegisterPage, Dashboard, SavedPostsPage } from "./pages";
+import {
+  LoginPage,
+  RegisterPage,
+  Dashboard,
+  SavedPostsPage,
+  ProfileEditPage,
+} from "./pages";
 
 const App = () => {
   return (
@@ -24,6 +30,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <SavedPostsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile/edit"
+          element={
+            <ProtectedRoute>
+              <ProfileEditPage />
             </ProtectedRoute>
           }
         />
