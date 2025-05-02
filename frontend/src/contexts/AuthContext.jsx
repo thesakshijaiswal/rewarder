@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import toast from "react-hot-toast";
+import api from "../services/api";
 
 const AuthContext = createContext();
 
@@ -131,6 +132,20 @@ export const AuthProvider = ({ children }) => {
     toast.info("Logged out successfully!");
   };
 
+  const refreshUser = async () => {
+    if (token) {
+      try {
+        const response = await api.get("/auth/me");
+        setUser(response.data.user);
+        return response.data.user;
+      } catch (error) {
+        console.error("Error refreshing user data:", error);
+        return null;
+      }
+    }
+    return null;
+  };
+
   const clearError = () => setError(null);
 
   return (
@@ -145,6 +160,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         clearError,
+        refreshUser,
       }}
     >
       {children}
