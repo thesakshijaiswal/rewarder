@@ -120,12 +120,27 @@ const Feed = () => {
 
   const handleReportPost = async (postId, reason) => {
     try {
-      await api.post(`/feed/post/${postId}/report`, { reason });
+      if (!reason || reason.trim() === "") {
+        toast.error("Please provide a reason for reporting");
+        return;
+      }
+
+      if (!postId) {
+        toast.error("Invalid post");
+        return;
+      }
+
+      await api.post(`/feed/post/${postId}/report`, {
+        reason: reason.trim(),
+      });
+
       toast.success(
         "Post reported. Thank you for helping keep our community safe! +1 credit",
       );
     } catch (error) {
-      toast.error("Failed to report post");
+      const errorMessage =
+        error.response?.data?.message || "Failed to report post";
+      toast.error(errorMessage);
       console.error("Error reporting post:", error);
     }
   };
