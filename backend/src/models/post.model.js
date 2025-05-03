@@ -31,6 +31,10 @@ const postSchema = new mongoose.Schema({
     default: Date.now,
   },
   imageUrl: String,
+  shareCount: {
+    type: Number,
+    default: 0,
+  },
   savedBy: [
     {
       type: mongoose.Schema.Types.ObjectId,

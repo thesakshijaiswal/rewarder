@@ -251,6 +251,9 @@ export const sharePost = async (req, res) => {
       });
     }
 
+    post.shareCount = (post.shareCount || 0) + 1;
+    await post.save();
+
     const user = await User.findById(userId);
     user.credits += 3;
     await user.save();

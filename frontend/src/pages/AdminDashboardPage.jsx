@@ -28,8 +28,16 @@ const AdminDashboardPage = () => {
   const [feedStats, setFeedStats] = useState({
     totalPosts: 0,
     reportedPosts: 0,
-    savedPosts: 0,
-    sharedPosts: 0,
+    savedStats: {
+      totalSaves: 0,
+      uniquePostsSaved: 0,
+    },
+    shareStats: {
+      totalShares: 0,
+      uniquePostsShared: 0,
+    },
+    sourceDistribution: {},
+    interactionTrends: [],
   });
 
   if (!isAdmin) {
@@ -75,7 +83,7 @@ const AdminDashboardPage = () => {
 
           if (userStatsRes.data.success && feedStatsRes.data.success) {
             setUserStats(userStatsRes.data);
-            setFeedStats(feedStatsRes.data);
+            setFeedStats(feedStatsRes.data.stats);
           } else {
             throw new Error("Failed to fetch analytics data");
           }

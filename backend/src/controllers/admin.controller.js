@@ -100,58 +100,160 @@ export const getUserStats = async (req, res) => {
 
 export const getFeedStats = async (req, res) => {
   try {
-    const totalPosts = await Post.countDocuments();
-
-    const reportedPosts = await Post.countDocuments({
-      "reportedBy.0": { $exists: true },
-    });
+    const [totalPosts, reportedPosts] = await Promise.all([
+      Post.countDocuments(),
+      Post.countDocuments({ "reportedBy.0": { $exists: true } }),
+    ]);
 
     const savedPostsCount = await Post.aggregate([
       {
         $group: {
           _id: null,
           totalSaves: { $sum: { $size: "$savedBy" } },
+          uniquePosts: {
+            $sum: { $cond: [{ $gt: [{ $size: "$savedBy" }, 0] }, 1, 0] },
+          },
         },
       },
     ]);
-
-    const totalSaves =
-      savedPostsCount.length > 0 ? savedPostsCount[0].totalSaves : 0;
 
     const sharedPosts = await Post.aggregate([
       {
         $group: {
           _id: null,
           totalShares: { $sum: "$shareCount" },
+          postsShared: { $sum: { $cond: [{ $gt: ["$shareCount", 0] }, 1, 0] } },
         },
       },
     ]);
-
-    const totalShares = sharedPosts.length > 0 ? sharedPosts[0].totalShares : 0;
 
     const sourceDistribution = await Post.aggregate([
       {
         $group: {
           _id: "$source",
           count: { $sum: 1 },
+          totalSaves: { $sum: { $size: "$savedBy" } },
+          totalShares: { $sum: "$shareCount" },
+          totalReports: { $sum: { $size: "$reportedBy" } },
         },
       },
     ]);
 
+    const today = new Date();
+
+    const todayISOString = today.toISOString().split("T")[0];
+
+    const endOfToday = new Date(today);
+    endOfToday.setHours(23, 59, 59, 999);
+
+    const sevenDaysAgo = new Date(today);
+    sevenDaysAgo.setDate(today.getDate() - 6);
+    sevenDaysAgo.setHours(0, 0, 0, 0);
+
+    console.log(
+      `Date range: ${sevenDaysAgo.toISOString()} to ${endOfToday.toISOString()}`
+    );
+
+    const dateRange = [];
+    const startDate = new Date(sevenDaysAgo);
+
+    for (let i = 0; i < 7; i++) {
+      const dateString = startDate.toISOString().split("T")[0];
+      dateRange.push(dateString);
+      startDate.setDate(startDate.getDate() + 1);
+    }
+
+    console.log("Expected date range:", dateRange);
+    console.log("Today's date:", todayISOString);
+
+    const interactionData = await Post.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: sevenDaysAgo,
+            $lte: endOfToday,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+          saves: { $sum: { $size: "$savedBy" } },
+          shares: { $sum: "$shareCount" },
+          reports: { $sum: { $size: "$reportedBy" } },
+          newPosts: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { _id: 1 },
+      },
+    ]);
+
+    console.log("MongoDB interaction data:", JSON.stringify(interactionData));
+
+    const interactionTrends = dateRange.map((date) => {
+      const dayData = interactionData.find((item) => item._id === date) || {
+        _id: date,
+        saves: 0,
+        shares: 0,
+        reports: 0,
+        newPosts: 0,
+      };
+
+      return {
+        _id: date,
+        saves: dayData.saves || 0,
+        shares: dayData.shares || 0,
+        reports: dayData.reports || 0,
+        newPosts: dayData.newPosts || 0,
+      };
+    });
+
+    const hasTodayData = interactionTrends.some(
+      (item) => item._id === todayISOString
+    );
+    console.log("Today's data included in response:", hasTodayData);
+
+    if (!hasTodayData) {
+      interactionTrends.push({
+        _id: todayISOString,
+        saves: 0,
+        shares: 0,
+        reports: 0,
+        newPosts: 0,
+      });
+    }
+
     const formattedSourceDistribution = {};
     sourceDistribution.forEach((source) => {
-      formattedSourceDistribution[source._id] = source.count;
+      formattedSourceDistribution[source._id] = {
+        count: source.count,
+        saves: source.totalSaves,
+        shares: source.totalShares,
+        reports: source.totalReports,
+      };
     });
 
     res.status(200).json({
       success: true,
-      totalPosts,
-      reportedPosts,
-      savedPosts: totalSaves,
-      sharedPosts: totalShares,
-      sourceDistribution: formattedSourceDistribution,
+      stats: {
+        totalPosts,
+        reportedPosts,
+        savedStats: {
+          totalSaves: savedPostsCount[0]?.totalSaves || 0,
+          uniquePostsSaved: savedPostsCount[0]?.uniquePosts || 0,
+        },
+        shareStats: {
+          totalShares: sharedPosts[0]?.totalShares || 0,
+          uniquePostsShared: sharedPosts[0]?.postsShared || 0,
+        },
+        sourceDistribution: formattedSourceDistribution,
+        interactionTrends,
+        generatedAt: new Date().toISOString(),
+      },
     });
   } catch (error) {
+    console.error("Error in getFeedStats:", error);
     res.status(500).json({
       success: false,
       message: "Error fetching feed statistics",
