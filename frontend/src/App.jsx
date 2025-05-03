@@ -8,6 +8,7 @@ import {
   Dashboard,
   SavedPostsPage,
   ProfileEditPage,
+  AdminDashboardPage,
 } from "./pages";
 
 const App = () => {
@@ -38,6 +39,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <ProfileEditPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute adminOnly={true}>
+              <AdminDashboardPage />
             </ProtectedRoute>
           }
         />

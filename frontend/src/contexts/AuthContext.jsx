@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const checkLoggedIn = async () => {
@@ -26,6 +27,7 @@ export const AuthProvider = ({ children }) => {
             localStorage.removeItem("token");
             setToken(null);
             setIsAuthenticated(false);
+            setIsAdmin(false);
             return;
           }
 
@@ -34,17 +36,20 @@ export const AuthProvider = ({ children }) => {
           if (data.success) {
             setUser(data.user);
             setIsAuthenticated(true);
+            setIsAdmin(data.user.role === "admin");
           } else {
             console.warn("Token invalid or session expired.");
             localStorage.removeItem("token");
             setToken(null);
             setIsAuthenticated(false);
+            setIsAdmin(false);
           }
         } catch (error) {
           console.error("Auth check error:", error);
         }
       } else {
         setIsAuthenticated(false);
+        setIsAdmin(false);
       }
       setLoading(false);
     };
@@ -108,6 +113,7 @@ export const AuthProvider = ({ children }) => {
         setToken(data.token);
         setUser(data.user);
         setIsAuthenticated(true);
+        setIsAdmin(data.user.role === "admin");
         toast.success("Login successful!");
         return true;
       } else {
@@ -129,7 +135,8 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setUser(null);
     setIsAuthenticated(false);
-    toast.info("Logged out successfully!");
+    setIsAdmin(false);
+    toast.success("Logged out successfully!");
   };
 
   const refreshUser = async () => {
@@ -156,6 +163,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         error,
         isAuthenticated,
+        isAdmin,
         register,
         login,
         logout,
