@@ -176,10 +176,16 @@ export const reportPost = async (req, res) => {
     const { reason } = req.body;
     const userId = req.user.id;
 
-    if (!reason) {
+    if (!reason || reason.trim() === "") {
       return res.status(400).json({
         success: false,
-        message: "Reason for report is required",
+        message: "Report reason is required",
+      });
+    }
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "Post ID is required",
       });
     }
 
@@ -195,7 +201,7 @@ export const reportPost = async (req, res) => {
     if (post.reportedBy.includes(userId)) {
       return res.status(400).json({
         success: false,
-        message: "Post already reported by you",
+        message: "You have already reported this post",
       });
     }
 

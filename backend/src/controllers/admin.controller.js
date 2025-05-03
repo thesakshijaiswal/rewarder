@@ -103,7 +103,7 @@ export const getFeedStats = async (req, res) => {
     const totalPosts = await Post.countDocuments();
 
     const reportedPosts = await Post.countDocuments({
-      "reports.0": { $exists: true },
+      "reportedBy.0": { $exists: true },
     });
 
     const savedPostsCount = await Post.aggregate([
