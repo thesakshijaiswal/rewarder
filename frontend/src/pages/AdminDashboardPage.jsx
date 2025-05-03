@@ -61,7 +61,7 @@ const AdminDashboardPage = () => {
         if (activeTab === "reported") {
           const { data } = await axios.get("/api/feed/reported");
           if (data.success) {
-            setReportedPosts(data.reportedPosts);
+            setReportedPosts(data.data.posts);
           } else {
             throw new Error(data.message);
           }
