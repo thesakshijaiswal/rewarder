@@ -91,7 +91,7 @@ const UserList = ({ users = [], loading = false, error = null }) => {
 
       <div className="overflow-x-auto rounded-lg border">
         <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+          <thead className="bg-indigo-50/40">
             <tr>
               <TableHeader field="username" label="Username" />
               <TableHeader field="email" label="Email" />
