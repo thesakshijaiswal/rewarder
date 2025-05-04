@@ -1,3 +1,4 @@
+import { handleError } from "../lib/utils.js";
 import User from "../models/user.model.js";
 
 export const updateProfile = async (req, res) => {
@@ -35,11 +36,7 @@ export const updateProfile = async (req, res) => {
       profile: user.profile,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Error updating profile",
-      error: error.message,
-    });
+    handleError(res, error, "updateProfile");
   }
 };
 
@@ -61,6 +58,7 @@ export const getProfile = async (req, res) => {
       bio: user.profile?.bio || "",
       avatar: user.profile?.avatar || "",
       createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
       username: user.username,
     };
 
@@ -74,10 +72,6 @@ export const getProfile = async (req, res) => {
       profileCompleted: user.profileCompleted,
     });
   } catch (error) {
-    console.error("Error fetching profile:", error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch profile",
-    });
+    handleError(res, error, "getProfile");
   }
 };

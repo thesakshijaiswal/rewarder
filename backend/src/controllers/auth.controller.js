@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
+import { handleError } from "../lib/utils.js";
 
 const generateToken = (payload) => {
   return jwt.sign(payload, process.env.JWT_SECRET, {
@@ -49,11 +50,7 @@ export const register = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Error in registration",
-      error: error.message,
-    });
+    handleError(res, error, "register");
   }
 };
 
@@ -85,7 +82,7 @@ export const login = async (req, res) => {
       !previousLoginDate ||
       previousLoginDate.toDateString() !== new Date().toDateString()
     ) {
-      user.credits += 5; // 5 credits for daily login
+      user.credits += 5;
     }
 
     await user.save();
@@ -115,11 +112,7 @@ export const login = async (req, res) => {
       user: userData,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Error logging in",
-      error: error.message,
-    });
+    handleError(res, error, "login");
   }
 };
 
@@ -139,10 +132,6 @@ export const getCurrentUser = async (req, res) => {
       user,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Error fetching user",
-      error: error.message,
-    });
+    handleError(res, error, "getCurrentUser");
   }
 };
