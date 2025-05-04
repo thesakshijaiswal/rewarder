@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { Button, Branding, Avatar } from "../components";
+import { Button, Header } from "../components";
 import { Feed } from "../components/feed";
-import { MdOutlineLogout, MdBookmark, MdAccountCircle } from "react-icons/md";
+import { MdBookmark, MdAccountCircle } from "react-icons/md";
 import { Link, useNavigate } from "react-router";
 import { MdArrowForward } from "react-icons/md";
 
 const Dashboard = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,27 +18,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <header className="bg-white shadow">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-5 px-4 py-6 text-center sm:px-6 md:flex-row md:text-left lg:px-8">
-          <Branding />
-          <div className="flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row">
-            <div className="flex items-center gap-2 text-gray-700 capitalize">
-              <Avatar src={user?.profile?.avatar} size={32} />
-              <span>
-                Welcome, {user?.username}! ({user?.credits} credits)
-              </span>
-            </div>
-            <Button
-              className="w-full bg-indigo-600 text-white hover:bg-indigo-700 sm:w-auto"
-              btnIcon={MdOutlineLogout}
-              onClick={logout}
-            >
-              Logout
-            </Button>
-          </div>
-        </div>
-      </header>
-
+      <Header />
       <main>
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

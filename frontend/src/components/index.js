@@ -7,3 +7,4 @@ export { default as UserCreditsForm } from "./UserCreditsForm";
 export { default as UserAnalytics } from "./UserAnalytics";
 export { default as FeedAnalytics } from "./FeedAnalytics";
 export { default as ReportedContent } from "./ReportedContent";
+export { default as Header } from "./Header";

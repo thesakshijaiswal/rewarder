@@ -8,6 +8,7 @@ import {
   ReportedContent,
   FeedAnalytics,
   Branding,
+  Header,
 } from "../components";
 import { useAuth } from "../contexts/AuthContext";
 import { Navigate } from "react-router";
@@ -164,9 +165,9 @@ const AdminDashboardPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="container mx-auto px-4 py-8">
-        <Branding className="justify-start" />
-        <h1 className="mt-5 mb-6 text-3xl font-bold text-gray-800">
+      <Header />
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <h1 className="mb-6 text-3xl font-bold text-gray-800">
           Admin Dashboard
         </h1>
 
