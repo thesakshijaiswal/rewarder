@@ -1,69 +1,68 @@
 import mongoose from "mongoose";
 
-const postSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  content: {
-    type: String,
-    required: true,
-  },
-  url: {
-    type: String,
-    required: true,
-  },
-  source: {
-    type: String,
-    enum: ["twitter", "reddit"],
-    required: true,
-  },
-  originalId: {
-    type: String,
-    required: true,
-  },
-  author: {
-    type: String,
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  imageUrl: String,
-  shareCount: {
-    type: Number,
-    default: 0,
-  },
-  savedBy: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+const postSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
     },
-  ],
-  reportedBy: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+    content: {
+      type: String,
+      required: true,
     },
-  ],
-  reportReasons: [
-    {
-      user: {
+    url: {
+      type: String,
+      required: true,
+    },
+    source: {
+      type: String,
+      enum: ["twitter", "reddit"],
+      required: true,
+    },
+    originalId: {
+      type: String,
+      required: true,
+    },
+    author: {
+      type: String,
+      required: true,
+    },
+    imageUrl: String,
+    shareCount: {
+      type: Number,
+      default: 0,
+    },
+    savedBy: [
+      {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
       },
-      reason: {
-        type: String,
-        required: true,
+    ],
+    reportedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
       },
-      createdAt: {
-        type: Date,
-        default: Date.now,
+    ],
+    reportReasons: [
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        reason: {
+          type: String,
+          required: true,
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
       },
-    },
-  ],
-});
+    ],
+  },
+  { timestamps: true }
+);
 
 const Post = mongoose.model("Post", postSchema);
 

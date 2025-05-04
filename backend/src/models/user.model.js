@@ -55,10 +55,6 @@ const userSchema = new mongoose.Schema(
       bio: String,
       avatar: String,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
   },
   { timestamps: true }
 );
