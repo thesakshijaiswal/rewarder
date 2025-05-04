@@ -69,7 +69,7 @@ export const getProfile = async (req, res) => {
     res.json({
       success: true,
       profile,
-      profileCompleted: user.profileCompleted,
+      profileCompleted,
     });
   } catch (error) {
     handleError(res, error, "getProfile");

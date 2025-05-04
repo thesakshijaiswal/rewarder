@@ -127,9 +127,26 @@ export const getCurrentUser = async (req, res) => {
       });
     }
 
+    const profileCompleted = Boolean(
+      user.profile?.name && user.profile?.bio && user.profile?.avatar
+    );
+
     res.status(200).json({
       success: true,
-      user,
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        credits: user.credits,
+        lastLoginDate: user.lastLoginDate,
+        savedPosts: user.savedPosts,
+        reportedPosts: user.reportedPosts,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+        profile: user.profile,
+        profileCompleted,
+      },
     });
   } catch (error) {
     handleError(res, error, "getCurrentUser");
