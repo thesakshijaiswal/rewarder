@@ -36,7 +36,7 @@ const ReportedContent = ({
   };
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
+    <div className="px-1 sm:px-3 lg:px-8">
       <h2 className="mb-4 text-xl font-semibold">Reported Content</h2>
 
       {reportedPosts.length === 0 ? (

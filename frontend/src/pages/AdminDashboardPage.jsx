@@ -170,20 +170,23 @@ const AdminDashboardPage = () => {
           Admin Dashboard
         </h1>
 
-        <div className="mb-6 flex border-b">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              className={`px-4 py-2 font-medium ${
-                activeTab === tab.id
-                  ? "border-b-2 border-indigo-600 text-indigo-600"
-                  : "text-gray-600 hover:text-gray-800"
-              }`}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              {tab.label}
-            </button>
-          ))}
+        {/* Responsive tab bar */}
+        <div className="mb-6 overflow-x-auto">
+          <div className="flex min-w-full space-x-4 border-b">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                className={`px-4 py-2 font-medium whitespace-nowrap ${
+                  activeTab === tab.id
+                    ? "border-b-2 border-indigo-600 text-indigo-600"
+                    : "text-gray-600 hover:text-gray-800"
+                }`}
+                onClick={() => setActiveTab(tab.id)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {error && (
