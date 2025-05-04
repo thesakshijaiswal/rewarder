@@ -31,6 +31,16 @@ export const getCreditHistory = async (req, res) => {
 export const awardProfileCompletion = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
+     const { name, bio, avatar } = user.profile || {};
+
+    const isComplete = name && bio && avatar;
+
+    if (!isComplete) {
+      return res.status(400).json({
+        success: false,
+        message: "Please complete your profile first",
+      });
+    }
     if (user.profileCompleted) {
       return res.status(400).json({
         success: false,
