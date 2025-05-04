@@ -26,7 +26,10 @@ export const register = async (req, res) => {
       role: role || "user",
     });
 
-    const token = generateToken(user._id);
+    const token = generateToken({
+      id: user._id,
+      role: user.role,
+    });
 
     res.status(201).json({
       success: true,
