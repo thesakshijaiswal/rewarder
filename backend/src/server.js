@@ -6,6 +6,7 @@ import creditRoutes from "./routes/credit.route.js";
 import feedRoutes from "./routes/feed.route.js";
 import profileRoutes from "./routes/profile.route.js";
 import adminRoutes from "./routes/admin.route.js";
+import path from "node:path";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
