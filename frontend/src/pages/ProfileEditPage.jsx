@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { MdSave, MdArrowBack } from "react-icons/md";
 import { useNavigate } from "react-router";
 import { FaUserCircle } from "react-icons/fa";
-import api from "../services/api";
+import axiosInstance from "../lib/axiosInstance";
 
 const ProfileEditPage = () => {
   const { user, refreshUser } = useAuth();
@@ -47,10 +47,10 @@ const ProfileEditPage = () => {
 
     try {
       setIsLoading(true);
-      await api.put("/profile/update", formData);
+      await axiosInstance.put("/profile/update", formData);
 
       if (!user.profileCompleted) {
-        await api.post("/credits/award/profile");
+        await axiosInstance.post("/credits/award/profile");
         toast.success("Profile completed! You earned 10 credits!");
       } else {
         toast.success("Profile updated successfully!");
