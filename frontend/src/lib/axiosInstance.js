@@ -1,15 +1,14 @@
 import axios from "axios";
+import { BASE_BACKEND_URL } from "./constants";
 
-const BASE_URL = "http://localhost:5000/api";
-
-const api = axios.create({
-  baseURL: BASE_URL,
+const axiosInstance = axios.create({
+  baseURL: `${BASE_BACKEND_URL}/api`,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-api.interceptors.request.use(
+axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -19,10 +18,10 @@ api.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
-api.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
@@ -34,7 +33,7 @@ api.interceptors.response.use(
       }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
-export default api;
+export default axiosInstance;
