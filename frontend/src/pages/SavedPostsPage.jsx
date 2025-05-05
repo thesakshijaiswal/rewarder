@@ -1,44 +1,30 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Button, Branding } from "../components";
 import { FeedList } from "../components/feed";
 import { MdOutlineLogout, MdArrowBack } from "react-icons/md";
 import { Link, useNavigate } from "react-router";
-import api from "../services/api";
+import { useFeed } from "../contexts/FeedContext";
 
 const SavedPostsPage = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const [savedPosts, setSavedPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const {
+    savedPostIds,
+    fetchSavedPosts,
+    handleUnsavePost,
+    loading,
+    currentPage,
+    totalPages,
+    posts,
+  } = useFeed();
+
+  useEffect(() => {
+    fetchSavedPosts();
+  }, []);
 
   const handleBack = () => {
     navigate("/dashboard");
-  };
-
-  const fetchSavedPosts = async (page = 1, replaceExisting = true) => {
-    try {
-      setLoading(true);
-      const response = await api.get(`/feed/saved?page=${page}&limit=10`);
-
-      if (response.data.success) {
-        if (replaceExisting) {
-          setSavedPosts(response.data.data.posts);
-        } else {
-          setSavedPosts((prev) => [...prev, ...response.data.data.posts]);
-        }
-        setCurrentPage(response.data.data.currentPage);
-        setTotalPages(response.data.data.totalPages);
-      }
-    } catch (error) {
-      console.error("Error fetching saved posts:", error);
-      setError("Failed to load saved posts. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
   };
 
   const handleLoadMore = () => {
@@ -46,19 +32,6 @@ const SavedPostsPage = () => {
       fetchSavedPosts(currentPage + 1, false);
     }
   };
-
-  const handleUnsavePost = async (postId) => {
-    try {
-      await api.delete(`/feed/post/${postId}/unsave`);
-      setSavedPosts((prev) => prev.filter((post) => post._id !== postId));
-    } catch (error) {
-      console.error("Error unsaving post:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchSavedPosts();
-  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -93,15 +66,11 @@ const SavedPostsPage = () => {
             <h2 className="text-2xl font-bold text-gray-900">Saved Posts</h2>
           </div>
 
-          {loading && savedPosts.length === 0 ? (
+          {loading && savedPostIds.length === 0 ? (
             <div className="flex justify-center py-12">
               <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent"></div>
             </div>
-          ) : error ? (
-            <div className="rounded-lg bg-red-100 p-4 text-red-700">
-              {error}
-            </div>
-          ) : savedPosts.length === 0 ? (
+          ) : savedPostIds.length === 0 ? (
             <div className="rounded-lg bg-white p-8 text-center shadow-md">
               <h3 className="text-xl font-medium text-gray-700">
                 No saved posts yet
@@ -119,8 +88,8 @@ const SavedPostsPage = () => {
           ) : (
             <div className="rounded-lg bg-white p-6 shadow-md">
               <FeedList
-                posts={savedPosts}
-                savedPostIds={savedPosts.map((post) => post._id)}
+                posts={posts.filter((post) => savedPostIds.includes(post._id))}
+                savedPostIds={savedPostIds}
                 onUnsave={handleUnsavePost}
                 loading={loading}
                 onLoadMore={handleLoadMore}
