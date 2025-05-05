@@ -19,6 +19,17 @@ app.use("/api/feed", feedRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/admin", adminRoutes);
 
+/*********PRODUCTION CODE**********/
+if (process.env.NODE_ENV === "production") {
+  const frontendDistPath = path.join(__dirname, "..", "frontend", "dist");
+  app.use(express.static(frontendDistPath));
+
+  app.get("/*splat", (req, res) => {
+    res.sendFile(path.join(frontendDistPath, "index.html"));
+  });
+}
+/*********PRODUCTION CODE**********/
+
 app.get("/", (req, res) => {
   res.send("Server is Running 🟢");
 });

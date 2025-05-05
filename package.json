@@ -1,0 +1,26 @@
+{
+  "name": "rewarder",
+  "version": "1.0.0",
+  "description": "Rewarder allows users to manage their profiles, earn credits through daily activities, and explore a personalized content feed. Users can save, share, and report posts, while admins can monitor user activities and manage credit balances easily.",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "npm run start --prefix backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thesakshijaiswal/rewarder.git"
+  },
+  "keywords": [
+    "Rewarder",
+    "dashboard",
+    "react",
+    "creator"
+  ],
+  "author": "Sakshi Jaiswal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thesakshijaiswal/rewarder/issues"
+  },
+  "homepage": "https://github.com/thesakshijaiswal/rewarder#readme"
+}
