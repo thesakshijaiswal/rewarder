@@ -93,7 +93,7 @@ const SavedPostsPage = () => {
                 onUnsave={handleUnsavePost}
                 loading={loading}
                 onLoadMore={handleLoadMore}
-                hasMore={currentPage < totalPages}
+                hasMore={false}
               />
             </div>
           )}

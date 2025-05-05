@@ -43,8 +43,17 @@ export const FeedProvider = ({ children }) => {
   const fetchSavedPosts = useCallback(async () => {
     try {
       const response = await axiosInstance.get("/feed/saved");
-      const savedIds = response.data.data.posts.map((post) => post._id);
+      const savedPosts = response.data.data.posts;
+      const savedIds = savedPosts.map((post) => post._id);
       setSavedPostIds(savedIds);
+
+      setPosts((prev) => {
+        const existingIds = new Set(prev.map((p) => p._id));
+        const newPosts = savedPosts.filter(
+          (post) => !existingIds.has(post._id),
+        );
+        return [...prev, ...newPosts];
+      });
     } catch (error) {
       console.error("Error fetching saved posts:", error);
     }
