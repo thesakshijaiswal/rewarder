@@ -150,10 +150,6 @@ export const getFeedStats = async (req, res) => {
     sevenDaysAgo.setDate(today.getDate() - 6);
     sevenDaysAgo.setHours(0, 0, 0, 0);
 
-    console.log(
-      `Date range: ${sevenDaysAgo.toISOString()} to ${endOfToday.toISOString()}`
-    );
-
     const dateRange = [];
     const startDate = new Date(sevenDaysAgo);
 
@@ -162,9 +158,6 @@ export const getFeedStats = async (req, res) => {
       dateRange.push(dateString);
       startDate.setDate(startDate.getDate() + 1);
     }
-
-    console.log("Expected date range:", dateRange);
-    console.log("Today's date:", todayISOString);
 
     const interactionData = await Post.aggregate([
       {
@@ -189,8 +182,6 @@ export const getFeedStats = async (req, res) => {
       },
     ]);
 
-    console.log("MongoDB interaction data:", JSON.stringify(interactionData));
-
     const interactionTrends = dateRange.map((date) => {
       const dayData = interactionData.find((item) => item._id === date) || {
         _id: date,
@@ -212,7 +203,6 @@ export const getFeedStats = async (req, res) => {
     const hasTodayData = interactionTrends.some(
       (item) => item._id === todayISOString
     );
-    console.log("Today's data included in response:", hasTodayData);
 
     if (!hasTodayData) {
       interactionTrends.push({
