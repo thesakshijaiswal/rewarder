@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import toast from "react-hot-toast";
-import api from "../services/api";
+import axiosInstance from "../lib/axiosInstance";
 
 const AuthContext = createContext();
 
@@ -17,22 +17,7 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         try {
           setLoading(true);
-          const response = await fetch("http://localhost:5000/api/auth/me", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          if (response.status === 401) {
-            localStorage.removeItem("token");
-            setToken(null);
-            setIsAuthenticated(false);
-            setIsAdmin(false);
-            return;
-          }
-
-          const data = await response.json();
-
+          const { data } = await axiosInstance.get("/auth/me");
           if (data.success) {
             setUser(data.user);
             setIsAuthenticated(true);
@@ -45,6 +30,12 @@ export const AuthProvider = ({ children }) => {
             setIsAdmin(false);
           }
         } catch (error) {
+          if (error.response && error.response.status === 401) {
+            localStorage.removeItem("token");
+            setToken(null);
+            setIsAuthenticated(false);
+            setIsAdmin(false);
+          }
           console.error("Auth check error:", error);
         }
       } else {
@@ -62,15 +53,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
-
-      const data = await response.json();
+      const { data } = await axiosInstance.post("/auth/register", userData);
 
       if (data.success) {
         localStorage.setItem("token", data.token);
@@ -85,7 +68,10 @@ export const AuthProvider = ({ children }) => {
         return false;
       }
     } catch (error) {
-      setError("An error occurred during registration");
+      const message =
+        error.response?.data?.message ||
+        "An error occurred during registration";
+      setError(message);
       toast.error("Registration failed! Please try again.");
       return false;
     } finally {
@@ -98,15 +84,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
-
-      const data = await response.json();
+      const { data } = await axiosInstance.post("/auth/login", userData);
 
       if (data.success) {
         localStorage.setItem("token", data.token);
@@ -122,7 +100,9 @@ export const AuthProvider = ({ children }) => {
         return false;
       }
     } catch (error) {
-      setError("An error occurred during login");
+      const message =
+        error.response?.data?.message || "An error occurred during login";
+      setError(message);
       toast.error("Login failed! Please try again.");
       return false;
     } finally {
@@ -142,9 +122,9 @@ export const AuthProvider = ({ children }) => {
   const refreshUser = async () => {
     if (token) {
       try {
-        const response = await api.get("/auth/me");
-        setUser(response.data.user);
-        return response.data.user;
+        const { data } = await axiosInstance.get("/auth/me");
+        setUser(data.user);
+        return data.user;
       } catch (error) {
         console.error("Error refreshing user data:", error);
         return null;
@@ -176,8 +156,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
-
-export default AuthContext;
+export const useAuth = () => useContext(AuthContext);
