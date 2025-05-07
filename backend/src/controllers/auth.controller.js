@@ -79,8 +79,9 @@ export const login = async (req, res) => {
     user.lastLoginDate = new Date();
 
     if (
-      !previousLoginDate ||
-      previousLoginDate.toDateString() !== new Date().toDateString()
+      user.role !== "admin" &&
+      (!previousLoginDate ||
+        previousLoginDate.toDateString() !== new Date().toDateString())
     ) {
       user.credits += 5;
     }

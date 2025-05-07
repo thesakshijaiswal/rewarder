@@ -33,6 +33,7 @@ const UserList = ({ users, loading, error }) => {
   };
 
   const filteredUsers = users
+    .filter((user) => user.role !== "admin")
     .filter(
       (user) =>
         user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||

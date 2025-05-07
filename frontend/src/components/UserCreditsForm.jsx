@@ -9,11 +9,13 @@ const UserCreditsForm = ({ users = [], onAdjustCredits }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const filteredUsers = users.filter(
-    (user) =>
-      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredUsers = users
+    .filter((user) => user.role !== "admin")
+    .filter(
+      (user) =>
+        user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -113,7 +115,7 @@ const UserCreditsForm = ({ users = [], onAdjustCredits }) => {
                   setCreditAmount(
                     e.target.value === "+"
                       ? Math.abs(creditAmount)
-                      : -Math.abs(creditAmount)
+                      : -Math.abs(creditAmount),
                   )
                 }
               >
