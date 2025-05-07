@@ -13,7 +13,6 @@ import {
 } from "recharts";
 
 const UserAnalytics = ({ stats }) => {
-  // Sample data for daily activity chart (typically this would come from API)
   const dailyActivityData = [
     { name: "Mon", users: stats.dailyActivity?.monday || 20 },
     { name: "Tue", users: stats.dailyActivity?.tuesday || 32 },
@@ -24,7 +23,6 @@ const UserAnalytics = ({ stats }) => {
     { name: "Sun", users: stats.dailyActivity?.sunday || 25 },
   ];
 
-  // Sample data for user roles pie chart
   const userRoleData = [
     { name: "Admin", value: stats.adminCount || 2 },
     {
@@ -38,8 +36,6 @@ const UserAnalytics = ({ stats }) => {
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">User Analytics</h2>
-
-      {/* Stats Overview */}
       <div className="mb-6 grid grid-cols-2 gap-4">
         <div className="rounded-lg border-l-4 border-blue-500 bg-white p-4 shadow">
           <div className="text-sm text-gray-500">Total Users</div>

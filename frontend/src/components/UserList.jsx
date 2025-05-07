@@ -1,8 +1,7 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
 import { LuUserRoundSearch } from "react-icons/lu";
 
-const UserList = ({ users = [], loading = false, error = null }) => {
+const UserList = ({ users, loading, error }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("username");
   const [sortOrder, setSortOrder] = useState("asc");
@@ -33,7 +32,7 @@ const UserList = ({ users = [], loading = false, error = null }) => {
     }
   };
 
-  const filteredUsers = (users || [])
+  const filteredUsers = users
     .filter(
       (user) =>
         user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -41,7 +40,6 @@ const UserList = ({ users = [], loading = false, error = null }) => {
     )
     .sort((a, b) => {
       let comparison = 0;
-
       if (sortBy === "username") {
         comparison = a.username.localeCompare(b.username);
       } else if (sortBy === "email") {
@@ -53,7 +51,6 @@ const UserList = ({ users = [], loading = false, error = null }) => {
       } else if (sortBy === "createdAt") {
         comparison = new Date(a.createdAt) - new Date(b.createdAt);
       }
-
       return sortOrder === "asc" ? comparison : -comparison;
     });
 
@@ -139,27 +136,6 @@ const UserList = ({ users = [], loading = false, error = null }) => {
       </div>
     </div>
   );
-};
-
-UserList.propTypes = {
-  users: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      username: PropTypes.string.isRequired,
-      email: PropTypes.string.isRequired,
-      credits: PropTypes.number.isRequired,
-      role: PropTypes.string.isRequired,
-      createdAt: PropTypes.string.isRequired,
-    }),
-  ),
-  loading: PropTypes.bool,
-  error: PropTypes.string,
-};
-
-UserList.defaultProps = {
-  users: [],
-  loading: false,
-  error: null,
 };
 
 export default UserList;

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import { toast } from "react-hot-toast";
 import { Button } from "../components";
 
@@ -154,32 +153,6 @@ const ReportedContent = ({
       )}
     </div>
   );
-};
-
-ReportedContent.propTypes = {
-  reportedPosts: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      source: PropTypes.string.isRequired,
-      title: PropTypes.string,
-      content: PropTypes.string,
-      reportedBy: PropTypes.arrayOf(PropTypes.string).isRequired,
-      reportReasons: PropTypes.arrayOf(
-        PropTypes.shape({
-          user: PropTypes.string,
-          reason: PropTypes.string,
-          createdAt: PropTypes.string.isRequired,
-          comment: PropTypes.string,
-        }),
-      ).isRequired,
-    }),
-  ),
-  onRemovePost: PropTypes.func.isRequired,
-  onClearReports: PropTypes.func.isRequired,
-};
-
-ReportedContent.defaultProps = {
-  reportedPosts: [],
 };
 
 export default ReportedContent;

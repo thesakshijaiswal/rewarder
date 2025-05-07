@@ -1,5 +1,4 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
 import { Button } from "../components";
 import { LuUserRoundSearch } from "react-icons/lu";
 
@@ -10,10 +9,10 @@ const UserCreditsForm = ({ users = [], onAdjustCredits }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const filteredUsers = (users || []).filter(
+  const filteredUsers = users.filter(
     (user) =>
       user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()),
+      user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleSubmit = async (e) => {
@@ -114,7 +113,7 @@ const UserCreditsForm = ({ users = [], onAdjustCredits }) => {
                   setCreditAmount(
                     e.target.value === "+"
                       ? Math.abs(creditAmount)
-                      : -Math.abs(creditAmount),
+                      : -Math.abs(creditAmount)
                   )
                 }
               >
@@ -173,22 +172,6 @@ const UserCreditsForm = ({ users = [], onAdjustCredits }) => {
       </div>
     </div>
   );
-};
-
-UserCreditsForm.propTypes = {
-  users: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      username: PropTypes.string.isRequired,
-      email: PropTypes.string.isRequired,
-      credits: PropTypes.number.isRequired,
-    }),
-  ),
-  onAdjustCredits: PropTypes.func.isRequired,
-};
-
-UserCreditsForm.defaultProps = {
-  users: [],
 };
 
 export default UserCreditsForm;
