@@ -63,7 +63,12 @@ const LoginPage = () => {
             </Link>
           </p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form
+          className="mt-8 space-y-6"
+          onSubmit={handleSubmit}
+          role="form"
+          aria-describedby={errors.general ? "form-error" : undefined}
+        >
           <div className="space-y-4 rounded-md">
             <div className="relative mb-8">
               <label htmlFor="email" className="sr-only">
@@ -77,6 +82,8 @@ const LoginPage = () => {
                 name="email"
                 type="email"
                 autoComplete="email"
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? "email-error" : undefined}
                 className={`relative block w-full appearance-none rounded-md border px-3 py-2 pl-10 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
                   errors.email ? "border-red-500" : "border-gray-300"
                 }`}
@@ -85,7 +92,10 @@ const LoginPage = () => {
                 onChange={handleChange}
               />
               {errors.email && (
-                <p className="absolute top-full left-0 mt-1 text-sm text-red-600">
+                <p
+                  id="email-error"
+                  className="absolute top-full left-0 mt-1 text-sm text-red-600"
+                >
                   {errors.email}
                 </p>
               )}
@@ -94,7 +104,10 @@ const LoginPage = () => {
               <label htmlFor="password" className="sr-only">
                 Password
               </label>
-              <div className="pointer-events-none absolute inset-y-0 left-0 z-20 flex items-center pl-3 text-gray-500">
+              <div
+                className="pointer-events-none absolute inset-y-0 left-0 z-20 flex items-center pl-3 text-gray-500"
+                aria-hidden="true"
+              >
                 <RiLockPasswordLine className="size-5" />
               </div>
               <input
@@ -102,6 +115,10 @@ const LoginPage = () => {
                 name="password"
                 type={showPassword ? "text" : "password"}
                 autoComplete="current-password"
+                aria-invalid={!!errors.password}
+                aria-describedby={
+                  errors.password ? "password-error" : undefined
+                }
                 className={`relative block w-full appearance-none rounded-md border px-3 py-2 pl-10 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
                   errors.password ? "border-red-500" : "border-gray-300"
                 }`}
@@ -113,6 +130,7 @@ const LoginPage = () => {
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute inset-y-0 right-0 z-20 flex items-center pr-3 text-gray-500 hover:text-gray-700"
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
                   <AiOutlineEye className="size-5" />
@@ -121,7 +139,10 @@ const LoginPage = () => {
                 )}
               </button>
               {errors.password && (
-                <p className="absolute top-full left-0 mt-1 text-sm text-red-600">
+                <p
+                  id="password-error"
+                  className="absolute top-full left-0 mt-1 text-sm text-red-600"
+                >
                   {errors.password}
                 </p>
               )}
@@ -138,6 +159,8 @@ const LoginPage = () => {
               type="submit"
               disabled={loading}
               className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
+              aria-busy={loading}
+              aria-live="polite"
             >
               {loading ? "Signing in..." : "Sign in"}
             </button>

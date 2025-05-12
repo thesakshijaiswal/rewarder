@@ -69,9 +69,9 @@ const RegisterPage = () => {
       <div className="w-full max-w-md space-y-8">
         <div>
           <Branding />
-          <h2 className="mt-6 text-center text-3xl font-extrabold whitespace-nowrap text-gray-900">
+          <h1 className="mt-6 text-center text-3xl font-extrabold whitespace-nowrap text-gray-900">
             Create your account
-          </h2>
+          </h1>
           <p className="mt-2 text-center text-sm text-gray-600">
             Or{" "}
             <Link
@@ -82,19 +82,33 @@ const RegisterPage = () => {
             </Link>
           </p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+
+        <form
+          className="mt-8 space-y-6"
+          onSubmit={handleSubmit}
+          role="form"
+          aria-describedby={errors.general ? "form-error" : undefined}
+        >
           <div className="space-y-4 rounded-md">
             <div className="relative mb-8">
               <label htmlFor="username" className="sr-only">
                 Username
               </label>
-              <div className="pointer-events-none absolute inset-y-0 left-0 z-20 flex items-center pl-3 text-gray-500">
+              <div
+                className="pointer-events-none absolute inset-y-0 left-0 z-20 flex items-center pl-3 text-gray-500"
+                aria-hidden="true"
+              >
                 <FaRegUser className="size-5" />
               </div>
               <input
                 id="username"
                 name="username"
                 type="text"
+                autoComplete="username"
+                aria-invalid={!!errors.username}
+                aria-describedby={
+                  errors.username ? "username-error" : undefined
+                }
                 className={`relative block w-full appearance-none rounded-md border px-3 py-2 pl-10 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
                   errors.username ? "border-red-500" : "border-gray-300"
                 }`}
@@ -103,16 +117,22 @@ const RegisterPage = () => {
                 onChange={handleChange}
               />
               {errors.username && (
-                <p className="absolute top-full left-0 mt-1 text-sm text-red-600">
+                <p
+                  id="username-error"
+                  className="absolute top-full left-0 mt-1 text-sm text-red-600"
+                >
                   {errors.username}
                 </p>
               )}
             </div>
             <div className="relative mb-8">
               <label htmlFor="email" className="sr-only">
-                Email
+                Email address
               </label>
-              <div className="pointer-events-none absolute inset-y-0 left-0 z-20 flex items-center pl-3 text-gray-500">
+              <div
+                className="pointer-events-none absolute inset-y-0 left-0 z-20 flex items-center pl-3 text-gray-500"
+                aria-hidden="true"
+              >
                 <IoMailOutline className="size-5" />
               </div>
               <input
@@ -120,6 +140,8 @@ const RegisterPage = () => {
                 name="email"
                 type="email"
                 autoComplete="email"
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? "email-error" : undefined}
                 className={`relative block w-full appearance-none rounded-md border px-3 py-2 pl-10 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
                   errors.email ? "border-red-500" : "border-gray-300"
                 }`}
@@ -128,7 +150,10 @@ const RegisterPage = () => {
                 onChange={handleChange}
               />
               {errors.email && (
-                <p className="absolute top-full left-0 mt-1 text-sm text-red-600">
+                <p
+                  id="email-error"
+                  className="absolute top-full left-0 mt-1 text-sm text-red-600"
+                >
                   {errors.email}
                 </p>
               )}
@@ -137,7 +162,10 @@ const RegisterPage = () => {
               <label htmlFor="password" className="sr-only">
                 Password
               </label>
-              <div className="pointer-events-none absolute inset-y-0 left-0 z-20 flex items-center pl-3 text-gray-500">
+              <div
+                className="pointer-events-none absolute inset-y-0 left-0 z-20 flex items-center pl-3 text-gray-500"
+                aria-hidden="true"
+              >
                 <RiLockPasswordLine className="size-5" />
               </div>
               <input
@@ -145,6 +173,10 @@ const RegisterPage = () => {
                 name="password"
                 type={showPassword ? "text" : "password"}
                 autoComplete="new-password"
+                aria-invalid={!!errors.password}
+                aria-describedby={
+                  errors.password ? "password-error" : undefined
+                }
                 className={`relative block w-full appearance-none rounded-md border px-3 py-2 pl-10 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
                   errors.password ? "border-red-500" : "border-gray-300"
                 }`}
@@ -156,6 +188,7 @@ const RegisterPage = () => {
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute inset-y-0 right-0 z-20 flex items-center pr-3 text-gray-500 hover:text-gray-700"
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
                   <AiOutlineEye className="size-5" />
@@ -164,7 +197,10 @@ const RegisterPage = () => {
                 )}
               </button>
               {errors.password && (
-                <p className="absolute top-full left-0 mt-1 text-sm text-red-600">
+                <p
+                  id="password-error"
+                  className="absolute top-full left-0 mt-1 text-sm text-red-600"
+                >
                   {errors.password}
                 </p>
               )}
@@ -173,7 +209,10 @@ const RegisterPage = () => {
               <label htmlFor="confirmPassword" className="sr-only">
                 Confirm Password
               </label>
-              <div className="pointer-events-none absolute inset-y-0 left-0 z-20 flex items-center pl-3 text-gray-500">
+              <div
+                className="pointer-events-none absolute inset-y-0 left-0 z-20 flex items-center pl-3 text-gray-500"
+                aria-hidden="true"
+              >
                 <RiLockPasswordLine className="size-5" />
               </div>
               <input
@@ -181,6 +220,10 @@ const RegisterPage = () => {
                 name="confirmPassword"
                 type={showConfirmPassword ? "text" : "password"}
                 autoComplete="new-password"
+                aria-invalid={!!errors.confirmPassword}
+                aria-describedby={
+                  errors.confirmPassword ? "confirm-password-error" : undefined
+                }
                 className={`relative block w-full appearance-none rounded-md border px-3 py-2 pl-10 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none ${
                   errors.confirmPassword ? "border-red-500" : "border-gray-300"
                 }`}
@@ -192,6 +235,11 @@ const RegisterPage = () => {
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 className="absolute inset-y-0 right-0 z-20 flex items-center pr-3 text-gray-500 hover:text-gray-700"
+                aria-label={
+                  showConfirmPassword
+                    ? "Hide confirm password"
+                    : "Show confirm password"
+                }
               >
                 {showConfirmPassword ? (
                   <AiOutlineEye className="size-5" />
@@ -200,23 +248,30 @@ const RegisterPage = () => {
                 )}
               </button>
               {errors.confirmPassword && (
-                <p className="absolute top-full left-0 mt-1 text-sm text-red-600">
+                <p
+                  id="confirm-password-error"
+                  className="absolute top-full left-0 mt-1 text-sm text-red-600"
+                >
                   {errors.confirmPassword}
                 </p>
               )}
             </div>
             {errors.general && (
-              <p className="mt-2 text-center text-sm text-red-600">
+              <p
+                id="form-error"
+                className="mt-2 text-center text-sm text-red-600"
+              >
                 {errors.general}
               </p>
             )}
           </div>
-
           <div>
             <button
               type="submit"
               disabled={loading}
               className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
+              aria-busy={loading}
+              aria-live="polite"
             >
               {loading ? "Creating Account..." : "Create Account"}
             </button>

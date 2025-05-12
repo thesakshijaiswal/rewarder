@@ -22,30 +22,46 @@ const Dashboard = () => {
       <main>
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 className="text-center text-2xl font-bold text-gray-900 md:text-left">
+            <h1 className="text-center text-2xl font-bold text-gray-900 md:text-left">
               Creator Dashboard
-            </h2>
-            <div className="flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row">
+            </h1>
+            <nav
+              aria-label="Profile actions"
+              className="flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row"
+            >
               <Link
                 to="/profile/edit"
                 className="flex w-full items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 sm:w-auto"
+                aria-label="Edit your profile"
               >
-                <MdAccountCircle className="mr-2 text-xl" />
+                <MdAccountCircle className="mr-2 text-xl" aria-hidden="true" />
                 Edit Profile
               </Link>
               <Link
                 to="/saved-posts"
                 className="flex w-full items-center justify-center rounded-md bg-slate-800 px-4 py-2 text-white hover:bg-slate-700 sm:w-auto"
+                aria-label="View saved posts"
               >
-                <MdBookmark className="mr-2" />
+                <MdBookmark className="mr-2" aria-hidden="true" />
                 Saved Posts
               </Link>
-            </div>
+            </nav>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            <div className="rounded-lg bg-white p-6 shadow-md">
-              <h2 className="mb-4 text-xl font-semibold">Credits</h2>
+          <section
+            className="grid grid-cols-1 gap-6 md:grid-cols-3"
+            aria-labelledby="dashboard-stats-heading"
+          >
+            <h2 id="dashboard-stats-heading" className="sr-only">
+              Dashboard Statistics
+            </h2>
+
+            <div
+              className="rounded-lg bg-white p-6 shadow-md"
+              role="region"
+              aria-label="Credits section"
+            >
+              <h3 className="mb-4 text-xl font-semibold">Credits</h3>
               <div className="text-3xl font-bold text-indigo-600">
                 {user?.credits}
               </div>
@@ -55,11 +71,16 @@ const Dashboard = () => {
               </p>
             </div>
 
-            <div className="rounded-lg bg-white p-6 shadow-md">
-              <h2 className="mb-4 text-xl font-semibold">Profile Status</h2>
-              <div className="flex items-center">
+            <div
+              className="rounded-lg bg-white p-6 shadow-md"
+              role="region"
+              aria-label="Profile status section"
+            >
+              <h3 className="mb-4 text-xl font-semibold">Profile Status</h3>
+              <div className="flex items-center" aria-live="polite">
                 <div
                   className={`h-4 w-4 rounded-full ${user?.profileCompleted ? "bg-green-500" : "bg-yellow-500"}`}
+                  aria-hidden="true"
                 ></div>
                 <span className="ml-2">
                   {user?.profileCompleted ? "Complete" : "Incomplete"}
@@ -75,7 +96,7 @@ const Dashboard = () => {
                     className="mt-2 inline-block text-sm font-medium text-indigo-600 hover:text-indigo-800"
                   >
                     <div className="flex items-center">
-                      <MdArrowForward className="mr-2" />
+                      <MdArrowForward className="mr-2" aria-hidden="true" />
                       Complete Now
                     </div>
                   </Link>
@@ -83,8 +104,12 @@ const Dashboard = () => {
               )}
             </div>
 
-            <div className="rounded-lg bg-white p-6 shadow-md">
-              <h2 className="mb-4 text-xl font-semibold">Daily Login</h2>
+            <div
+              className="rounded-lg bg-white p-6 shadow-md"
+              role="region"
+              aria-label="Daily login reward section"
+            >
+              <h3 className="mb-4 text-xl font-semibold">Daily Login</h3>
               <p className="text-gray-600">
                 You've logged in today and earned 5 credits!
               </p>
@@ -92,16 +117,25 @@ const Dashboard = () => {
                 Come back tomorrow for more credits.
               </p>
             </div>
-          </div>
+          </section>
 
           {user?.profile?.name && (
-            <div className="mt-8 rounded-lg bg-white p-6 shadow-md">
-              <h2 className="mb-4 text-xl font-semibold">Your Profile</h2>
+            <section
+              className="mt-8 rounded-lg bg-white p-6 shadow-md"
+              role="region"
+              aria-labelledby="your-profile-heading"
+            >
+              <h2
+                id="your-profile-heading"
+                className="mb-4 text-xl font-semibold"
+              >
+                Your Profile
+              </h2>
               <div className="flex flex-col items-start sm:flex-row sm:items-center">
                 {user.profile.avatar && (
                   <img
                     src={user.profile.avatar}
-                    alt="Profile avatar"
+                    alt={`${user.profile.name}'s avatar`}
                     className="mb-4 h-16 w-16 rounded-full object-cover sm:mr-4 sm:mb-0"
                     onError={(e) => {
                       e.target.onerror = null;
@@ -120,14 +154,15 @@ const Dashboard = () => {
                   onClick={() => navigate("/profile/edit")}
                   className="bg-slate-800 text-sm font-medium text-white hover:bg-slate-700"
                   btnIcon={MdArrowForward}
+                  aria-label="Edit your profile"
                 >
                   Edit Profile
                 </Button>
               </div>
-            </div>
+            </section>
           )}
 
-          <div className="mt-8">
+          <div className="mt-8" role="region" aria-label="Feed section">
             <Feed />
           </div>
         </div>

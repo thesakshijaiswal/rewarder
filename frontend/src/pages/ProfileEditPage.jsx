@@ -72,38 +72,57 @@ const ProfileEditPage = () => {
           onClick={() => navigate("/dashboard")}
           className="mb-6 flex items-center bg-slate-800 text-white hover:bg-slate-700"
           btnIcon={MdArrowBack}
+          aria-label="Go back to dashboard"
         >
           Back
         </Button>
 
-        <div className="rounded-lg bg-white p-8 shadow-md">
-          <h1 className="mb-6 text-2xl font-bold text-gray-900">
+        <div
+          className="rounded-lg bg-white p-8 shadow-md"
+          role="form"
+          aria-labelledby="edit-profile-heading"
+        >
+          <h1
+            id="edit-profile-heading"
+            className="mb-6 text-2xl font-bold text-gray-900"
+          >
             Edit Profile
           </h1>
 
           {!user.profileCompleted && (
-            <div className="mb-6 rounded-md bg-yellow-50 p-4 text-yellow-800">
+            <div
+              className="mb-6 rounded-md bg-yellow-50 p-4 text-yellow-800"
+              role="alert"
+              aria-live="polite"
+            >
               Complete your profile to earn 10 credits!
             </div>
           )}
 
-          <div className="mb-6 flex justify-center">
+          <div
+            className="mb-6 flex justify-center"
+            aria-label="User avatar preview"
+          >
             {formData.avatar?.trim() ? (
               <div className="h-24 w-24 overflow-hidden rounded-full border border-gray-300">
                 <img
                   src={formData.avatar}
-                  alt="User avatar"
+                  alt="Current user avatar"
                   className="h-full w-full object-cover"
                 />
               </div>
             ) : (
-              <div className="flex h-24 w-24 items-center justify-center rounded-full border border-gray-300">
-                <FaUserCircle className="h-full w-full text-gray-400" />{" "}
+              <div
+                className="flex h-24 w-24 items-center justify-center rounded-full border border-gray-300"
+                role="img"
+                aria-label="Default user avatar"
+              >
+                <FaUserCircle className="h-full w-full text-gray-400" />
               </div>
             )}
           </div>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} aria-describedby="edit-profile-heading">
             <div className="mb-5">
               <label
                 htmlFor="name"
@@ -120,6 +139,7 @@ const ProfileEditPage = () => {
                 className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                 placeholder="Enter your full name"
                 required
+                aria-required="true"
               />
             </div>
 
@@ -139,6 +159,7 @@ const ProfileEditPage = () => {
                 className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                 placeholder="Tell us about yourself..."
                 required
+                aria-required="true"
               />
             </div>
 
@@ -150,13 +171,14 @@ const ProfileEditPage = () => {
                 Avatar URL
               </label>
               <input
-                type="text"
+                type="url"
                 id="avatar"
                 name="avatar"
                 value={formData.avatar}
                 onChange={handleChange}
                 className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                 placeholder="Enter avatar URL (optional)"
+                aria-describedby="avatar-desc"
               />
             </div>
 
@@ -166,6 +188,8 @@ const ProfileEditPage = () => {
                 btnIcon={MdSave}
                 className="bg-indigo-600 text-white hover:bg-indigo-700"
                 disabled={isLoading}
+                aria-disabled={isLoading}
+                aria-busy={isLoading}
               >
                 {isLoading ? "Saving..." : "Save Profile"}
               </Button>
