@@ -24,8 +24,19 @@ app.use("/api/admin", adminRoutes);
 /*********PRODUCTION CODE**********/
 if (process.env.NODE_ENV === "production") {
   const frontendDistPath = path.join(__dirname, "..", "frontend", "dist");
+  const publicPath = path.join(__dirname, "..", "frontend", "public");
+
   app.use(express.static(frontendDistPath));
 
+  app.get("/robots.txt", (req, res) => {
+    res.sendFile(path.join(publicPath, "robots.txt"));
+  });
+
+  app.get("/sitemap.xml", (req, res) => {
+    res.sendFile(path.join(publicPath, "sitemap.xml"));
+  });
+
+  // Catch-all route for React SPA
   app.get("/*splat", (req, res) => {
     res.sendFile(path.join(frontendDistPath, "index.html"));
   });
