@@ -17,17 +17,16 @@ export const FeedProvider = ({ children }) => {
     async (page = 1, replaceExisting = true, source = sourceFilter) => {
       try {
         setLoading(true);
-        const params = new URLSearchParams({
-          page,
-          limit: 5,
-        });
+        const params = new URLSearchParams({ page, limit: 5 });
         if (source) params.append("source", source);
         const response = await axiosInstance.get(`/feed?${params}`);
+
         if (replaceExisting) {
           setPosts(response.data.data.posts);
         } else {
-          setPosts((prev) => [...prev, ...response.data.data.posts]);
+          setPosts((prev) => mergeUniquePosts(prev, response.data.data.posts));
         }
+
         setCurrentPage(response.data.data.currentPage);
         setTotalPages(response.data.data.totalPages);
       } catch (error) {
@@ -47,13 +46,7 @@ export const FeedProvider = ({ children }) => {
       const savedIds = savedPosts.map((post) => post._id);
       setSavedPostIds(savedIds);
 
-      setPosts((prev) => {
-        const existingIds = new Set(prev.map((p) => p._id));
-        const newPosts = savedPosts.filter(
-          (post) => !existingIds.has(post._id),
-        );
-        return [...prev, ...newPosts];
-      });
+      setPosts((prev) => mergeUniquePosts(prev, savedPosts));
     } catch (error) {
       console.error("Error fetching saved posts:", error);
     }
@@ -128,6 +121,12 @@ export const FeedProvider = ({ children }) => {
       toast.error(errorMessage);
       console.error("Error reporting post:", error);
     }
+  };
+
+  const mergeUniquePosts = (prevPosts, newPosts) => {
+    const existingIds = new Set(prevPosts.map((p) => p._id));
+    const filtered = newPosts.filter((p) => !existingIds.has(p._id));
+    return [...prevPosts, ...filtered];
   };
 
   return (
