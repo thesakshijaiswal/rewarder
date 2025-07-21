@@ -10,3 +10,4 @@ export { default as ReportedContent } from "./ReportedContent";
 export { default as Header } from "./Header";
 export { default as PublicRoute } from "./PublicRoute";
 export { default as Loader } from "./Loader";
+export { default as Blob } from "./Blob";
