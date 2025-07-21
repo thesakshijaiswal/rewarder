@@ -1,4 +1,4 @@
-# Rewarder
+# 🪙 Rewarder
 
 Rewarder is a full stack web app designed to engage content creators through a gamified experience. Users can manage their profiles, earn credits by staying active, and interact with a personalized content feed sourced from top platforms.
 
@@ -89,7 +89,7 @@ Rewarder/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/rewarder.git
+git clone https://github.com/thesakshijaiswal/rewarder.git
 cd rewarder
 ```
 
@@ -141,6 +141,10 @@ npm run dev
 - `npm start` – start server
 
 ---
+
+## ✨ Preview
+
+<img width="1919" height="959" alt="rewarder-UI" src="https://github.com/user-attachments/assets/7b467ee8-24a8-43a1-8226-ef7cee1a838b" />
 
 ## 🛠 Developer
 
