@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { Button } from "../components";
+import { Button, Header } from "../components";
 import { toast } from "react-hot-toast";
 import { MdSave, MdArrowBack, MdCameraAlt } from "react-icons/md";
 import { useNavigate } from "react-router";
@@ -22,6 +22,14 @@ const ProfileEditPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
+
+  const joiningDate = user?.createdAt
+    ? new Date(user.createdAt).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : "";
 
   useEffect(() => {
     if (user?.profile) {
@@ -135,8 +143,9 @@ const ProfileEditPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <div className="mx-auto max-w-2xl px-4">
+    <div className="min-h-screen bg-gray-100">
+      <Header />
+      <div className="mx-auto max-w-2xl px-4 py-8">
         <Button
           onClick={() => navigate("/dashboard")}
           className="mb-6 flex items-center bg-slate-800 text-white hover:bg-slate-700"
@@ -264,6 +273,18 @@ const ProfileEditPage = () => {
                 required
                 aria-required="true"
               />
+            </div>
+
+            <div className="mb-8 border-t-1 border-gray-300">
+              <h4 className="mt-6 text-lg font-bold">Account Information</h4>
+              <div className="mt-2 flex items-center justify-between text-sm text-gray-600">
+                <span className="font-medium">Member Since: </span>
+                <span>{joiningDate || "N/A"}</span>
+              </div>
+              <div className="mt-2 flex items-center justify-between text-sm text-gray-600">
+                <span className="font-medium">Account Status: </span>
+                <span className="font-semibold text-emerald-600">Active</span>
+              </div>
             </div>
 
             <div className="flex justify-end">
