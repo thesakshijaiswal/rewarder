@@ -3,8 +3,7 @@ import User from "../models/user.model.js";
 
 export const updateProfile = async (req, res) => {
   try {
-    const { name, bio } = req.body;
-    const avatar = req.file ? req.file.path : req.body.avatar;
+    const { name, bio, avatar } = req.body;
 
     if (!name || !bio) {
       return res.status(400).json({
@@ -25,8 +24,17 @@ export const updateProfile = async (req, res) => {
     user.profile = {
       name,
       bio,
-      avatar: avatar || user.profile.avatar,
+      avatar: avatar || user.profile?.avatar || "",
     };
+
+    const wasProfileIncomplete = !user.profileCompleted;
+    const isNowComplete = Boolean(
+      user.profile.name && user.profile.bio && user.profile.avatar
+    );
+
+    if (wasProfileIncomplete && isNowComplete) {
+      user.profileCompleted = true;
+    }
 
     await user.save();
 
@@ -34,6 +42,7 @@ export const updateProfile = async (req, res) => {
       success: true,
       message: "Profile updated successfully",
       profile: user.profile,
+      profileCompleted: user.profileCompleted,
     });
   } catch (error) {
     handleError(res, error, "updateProfile");

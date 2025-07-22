@@ -1,15 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "../components";
 import { toast } from "react-hot-toast";
-import { MdSave, MdArrowBack } from "react-icons/md";
+import { MdSave, MdArrowBack, MdCameraAlt } from "react-icons/md";
 import { useNavigate } from "react-router";
 import { FaUserCircle } from "react-icons/fa";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import axiosInstance from "../lib/axiosInstance";
 
 const ProfileEditPage = () => {
   const { user, refreshUser } = useAuth();
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -18,6 +20,8 @@ const ProfileEditPage = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [imagePreview, setImagePreview] = useState("");
 
   useEffect(() => {
     if (user?.profile) {
@@ -26,6 +30,7 @@ const ProfileEditPage = () => {
         bio: user.profile.bio || "",
         avatar: user.profile.avatar || "",
       });
+      setImagePreview(user.profile.avatar || "");
     }
   }, [user]);
 
@@ -35,6 +40,70 @@ const ProfileEditPage = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select a valid image file");
+      return;
+    }
+
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      toast.error("Image size should be less than 5MB");
+      return;
+    }
+
+    try {
+      setIsUploadingImage(true);
+      const base64 = await convertToBase64(file);
+      const response = await axiosInstance.post("/upload", {
+        image: base64,
+      });
+
+      if (response.data.success !== false) {
+        const imageUrl = response.data.image;
+        setFormData((prev) => ({
+          ...prev,
+          avatar: imageUrl,
+        }));
+        setImagePreview(imageUrl);
+        toast.success("Image uploaded successfully!");
+      }
+    } catch (error) {
+      console.error("Image upload error:", error);
+      toast.error(error.response?.data?.message || "Failed to upload image");
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setFormData((prev) => ({
+      ...prev,
+      avatar: "",
+    }));
+    setImagePreview("");
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -99,27 +168,61 @@ const ProfileEditPage = () => {
             </div>
           )}
 
-          <div
-            className="mb-6 flex justify-center"
-            aria-label="User avatar preview"
-          >
-            {formData.avatar?.trim() ? (
-              <div className="h-24 w-24 overflow-hidden rounded-full border border-gray-300">
-                <img
-                  src={formData.avatar}
-                  alt="Current user avatar"
-                  className="h-full w-full object-cover"
-                />
+          <div className="mb-6 flex flex-col items-center">
+            <div className="group relative">
+              <div className="h-24 w-24 overflow-hidden rounded-full border-2 border-gray-300">
+                {imagePreview ? (
+                  <img
+                    src={imagePreview}
+                    alt="Profile avatar"
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center bg-gray-100">
+                    <FaUserCircle className="h-full w-full text-gray-400" />
+                  </div>
+                )}
               </div>
-            ) : (
+
               <div
-                className="flex h-24 w-24 items-center justify-center rounded-full border border-gray-300"
-                role="img"
-                aria-label="Default user avatar"
+                className="bg-opacity-50 absolute inset-0 flex cursor-pointer items-center justify-center rounded-full bg-black opacity-0 transition-opacity group-hover:opacity-100"
+                onClick={handleImageClick}
               >
-                <FaUserCircle className="h-full w-full text-gray-400" />
+                <MdCameraAlt className="text-xl text-white" />
               </div>
-            )}
+            </div>
+
+            <div className="mt-4 flex gap-2">
+              <Button
+                type="button"
+                onClick={handleImageClick}
+                disabled={isUploadingImage}
+                className="bg-indigo-600 text-sm text-white hover:bg-indigo-700"
+              >
+                {isUploadingImage ? "Uploading..." : "Upload Photo"}
+              </Button>
+
+              {imagePreview && (
+                <Button
+                  type="button"
+                  onClick={handleRemoveImage}
+                  className="bg-red-600 text-white hover:bg-red-700"
+                >
+                  <RiDeleteBin6Line />
+                </Button>
+              )}
+            </div>
+
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleImageChange}
+              accept="image/*"
+              className="hidden"
+              aria-label="Upload profile picture"
+            />
+
+            <p className="mt-2 text-xs text-gray-500">PNG, JPG up to 5MB</p>
           </div>
 
           <form onSubmit={handleSubmit} aria-describedby="edit-profile-heading">
@@ -143,7 +246,7 @@ const ProfileEditPage = () => {
               />
             </div>
 
-            <div className="mb-5">
+            <div className="mb-6">
               <label
                 htmlFor="bio"
                 className="mb-2 block text-sm font-medium text-gray-700"
@@ -163,33 +266,14 @@ const ProfileEditPage = () => {
               />
             </div>
 
-            <div className="mb-6">
-              <label
-                htmlFor="avatar"
-                className="mb-2 block text-sm font-medium text-gray-700"
-              >
-                Avatar URL
-              </label>
-              <input
-                type="url"
-                id="avatar"
-                name="avatar"
-                value={formData.avatar}
-                onChange={handleChange}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
-                placeholder="Enter avatar URL (optional)"
-                aria-describedby="avatar-desc"
-              />
-            </div>
-
             <div className="flex justify-end">
               <Button
                 type="submit"
                 btnIcon={MdSave}
                 className="bg-indigo-600 text-white hover:bg-indigo-700"
-                disabled={isLoading}
-                aria-disabled={isLoading}
-                aria-busy={isLoading}
+                disabled={isLoading || isUploadingImage}
+                aria-disabled={isLoading || isUploadingImage}
+                aria-busy={isLoading || isUploadingImage}
               >
                 {isLoading ? "Saving..." : "Save Profile"}
               </Button>

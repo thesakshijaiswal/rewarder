@@ -6,6 +6,7 @@ import creditRoutes from "./routes/credit.route.js";
 import feedRoutes from "./routes/feed.route.js";
 import profileRoutes from "./routes/profile.route.js";
 import adminRoutes from "./routes/admin.route.js";
+import uploadRoutes from "./routes/upload.route.js";
 import path from "node:path";
 
 const app = express();
@@ -20,6 +21,7 @@ app.use("/api/credits", creditRoutes);
 app.use("/api/feed", feedRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/upload", uploadRoutes);
 
 /*********PRODUCTION CODE**********/
 if (process.env.NODE_ENV === "production") {
