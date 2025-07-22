@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { FaBookmark, FaRegBookmark, FaShare, FaFlag } from "react-icons/fa";
+import {
+  FaBookmark,
+  FaRegBookmark,
+  FaShare,
+  FaFlag,
+  FaUserCircle,
+} from "react-icons/fa";
 import ReportModal from "./ReportModel";
 
 const getRelativeTime = (dateString) => {
@@ -50,13 +56,25 @@ const FeedItem = ({ post, onSave, onUnsave, onShare, onReport, saved }) => {
   return (
     <div className="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
       <div className="mb-2 flex flex-wrap items-start gap-2 sm:flex-nowrap sm:items-center">
-        {post.imageUrl && (
-          <img
-            src={post.imageUrl}
-            alt={post.author}
-            className="h-8 w-8 rounded-full"
-          />
-        )}
+        <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-gray-200 text-xs font-semibold text-gray-600">
+          {post.imageUrl ? (
+            <img
+              src={post.imageUrl}
+              alt={post.author}
+              className="h-full w-full object-cover"
+            />
+          ) : post.author ? (
+            post.author
+              .split(" ")
+              .map((n) => n[0])
+              .slice(0, 2)
+              .join("")
+              .toUpperCase()
+          ) : (
+            <FaUserCircle className="text-lg text-gray-400" />
+          )}
+        </div>
+
         <div className="min-w-0">
           <h3 className="text-sm font-semibold sm:text-base">{post.title}</h3>
           <div className="flex flex-wrap gap-1 text-xs text-gray-500 sm:gap-2">
