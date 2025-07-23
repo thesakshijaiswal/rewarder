@@ -121,28 +121,67 @@ const getMockTweets = (query, count) => {
     ],
   };
 
+  const names = [
+    "Alice Johnson",
+    "Raj Patel",
+    "Emily Chen",
+    "Carlos Reyes",
+    "Fatima Khan",
+    "Liam Smith",
+    "Nina Gupta",
+    "Tomoko Sato",
+    "Jamal Brooks",
+    "Isla Davies",
+  ];
+
+  const usernames = [
+    "alicej",
+    "raj_p",
+    "emchen",
+    "carlosr",
+    "fatik",
+    "liam_s",
+    "nina_g",
+    "tomos",
+    "jamal_b",
+    "isla_d",
+  ];
+
+  const tweetPhrases = [
+    "I've been reflecting on this topic lately, and I think it's worth a deeper look into",
+    "There's a lot of noise around this, but here's a perspective I believe deserves more attention:",
+    "After digging into this subject for a while, I wanted to share some key insights I found about",
+    "This might not be talked about enough, but it's something that really made me think deeply about",
+    "In a world full of quick takes, here’s a more nuanced thought I’ve been forming on",
+  ];
+
   return Array(count)
     .fill(null)
-    .map((_, i) => ({
-      title: `Mock Tweet ${i + 1}`,
-      content: `This is a mock tweet about ${
-        topics[query]?.[i % 5] || topics.default[i % 5]
-      }. #${query}`,
-      url: `https://twitter.com/mock/status/${Date.now()}_${i}`,
-      source: "twitter",
-      originalId: `mock_${Date.now()}_${i}`,
-      author: `mockuser${i}`,
-      authorName: `Mock User ${i}`,
-      createdAt: new Date(Date.now() - i * 3600000),
-      imageUrl: `https://via.placeholder.com/48x48?text=U${i}`,
-      metrics: {
-        retweet_count: Math.floor(Math.random() * 100),
-        reply_count: Math.floor(Math.random() * 50),
-        like_count: Math.floor(Math.random() * 500),
-        quote_count: Math.floor(Math.random() * 20),
-      },
-      isMock: true,
-    }));
+    .map((_, i) => {
+      const topic = topics[query]?.[i % 5] || topics.default[i % 5];
+      const phrase = tweetPhrases[i % tweetPhrases.length];
+      const name = names[i % names.length];
+      const username = usernames[i % usernames.length];
+
+      return {
+        title: `Tweet by ${name}`,
+        content: `${phrase} ${topic}. #${query}`,
+        url: `https://twitter.com/${username}/status/${Date.now()}_${i}`,
+        source: "twitter",
+        originalId: `mock_${Date.now()}_${i}`,
+        author: username,
+        authorName: name,
+        createdAt: new Date(Date.now() - i * 1000 * 60 * 37),
+        imageUrl: `https://i.pravatar.cc/48?u=${username}`,
+        metrics: {
+          retweet_count: Math.floor(Math.random() * 100),
+          reply_count: Math.floor(Math.random() * 50),
+          like_count: Math.floor(Math.random() * 500),
+          quote_count: Math.floor(Math.random() * 20),
+        },
+        isMock: true,
+      };
+    });
 };
 
 export const storeTweets = async (tweets) => {

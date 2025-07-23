@@ -52,11 +52,24 @@ export const FeedProvider = ({ children }) => {
     }
   }, []);
 
+  const [lastRefreshTime, setLastRefreshTime] = useState(0);
+  const TIMER = 15 * 60 * 1000;
+
   const refreshFeed = useCallback(async () => {
+    const now = Date.now();
+    if (now - lastRefreshTime < TIMER) {
+      const minsLeft = Math.ceil((TIMER - (now - lastRefreshTime)) / 60000);
+      toast.error(
+        `Nothing to refresh. Try again in ${minsLeft} min${minsLeft > 1 ? "s" : ""}.`,
+      );
+      return;
+    }
+
     try {
       setRefreshing(true);
       await axiosInstance.post("/feed/refresh");
       await fetchFeed(1, true);
+      setLastRefreshTime(now);
       toast.success("Feed refreshed with new content!");
     } catch (error) {
       toast.error("Failed to refresh feed");
@@ -64,7 +77,7 @@ export const FeedProvider = ({ children }) => {
     } finally {
       setRefreshing(false);
     }
-  }, [fetchFeed]);
+  }, [fetchFeed, lastRefreshTime]);
 
   const handleSavePost = async (postId) => {
     try {

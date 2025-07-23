@@ -50,7 +50,6 @@ export const fetchRedditPosts = async (subreddit = "all", limit = 10) => {
       .map((post) => {
         const postData = post.data;
 
-        // Filter out deleted/removed posts
         if (
           postData.removed_by_category ||
           postData.title === "[deleted]" ||
@@ -62,9 +61,7 @@ export const fetchRedditPosts = async (subreddit = "all", limit = 10) => {
         return {
           title: postData.title,
           content: postData.selftext || postData.title,
-          url:
-            postData.url_overridden_by_dest ||
-            `https://reddit.com${postData.permalink}`,
+          url: `https://reddit.com${postData.permalink}`,
           source: "reddit",
           originalId: postData.id,
           author: postData.author,
@@ -75,27 +72,23 @@ export const fetchRedditPosts = async (subreddit = "all", limit = 10) => {
           num_comments: postData.num_comments,
         };
       })
-      .filter((post) => post !== null); // Remove null entries
+      .filter((post) => post !== null);
 
     console.log(`Successfully processed ${posts.length} Reddit posts`);
     return posts;
   } catch (error) {
     console.error("Error fetching Reddit posts:", error);
 
-    // Log more details about the error
     if (error.name === "TypeError" && error.message.includes("fetch")) {
-      console.error("Network error - possibly CORS or connectivity issue");
+      console.error("Network error");
     }
 
-    // Return mock posts as fallback
     console.log("Falling back to mock Reddit posts");
     return getMockRedditPosts(subreddit, limit);
   }
 };
 
-// Helper function to get valid image URL
 const getValidImageUrl = (postData) => {
-  // Check for preview images first
   if (
     postData.preview &&
     postData.preview.images &&
@@ -107,7 +100,6 @@ const getValidImageUrl = (postData) => {
     }
   }
 
-  // Check thumbnail
   if (
     postData.thumbnail &&
     postData.thumbnail !== "self" &&
@@ -119,7 +111,6 @@ const getValidImageUrl = (postData) => {
     return postData.thumbnail;
   }
 
-  // Check if it's an image URL
   if (postData.url && /\.(jpg|jpeg|png|gif|webp)$/i.test(postData.url)) {
     return postData.url;
   }
@@ -132,14 +123,14 @@ const getMockRedditPosts = (subreddit, limit) => {
   const mockPosts = [];
 
   const sampleTitles = [
-    "TIL: Interesting fact about technology",
-    "Discussion: What's your favorite programming language?",
-    "Show and Tell: My latest project",
-    "Question: Need help with a coding problem",
-    "News: Latest updates in the tech world",
-    "Tutorial: How to improve your coding skills",
-    "Opinion: Thoughts on remote work",
-    "Review: New framework/library overview",
+    "Interesting fact about technology",
+    "What's your favorite programming language?",
+    "Walking through My latest project",
+    "Need help with a coding problem",
+    "Latest updates in the tech world",
+    "How to improve your coding skills",
+    "Thoughts on remote work",
+    "New framework/library overview",
   ];
 
   const sampleContent = [
@@ -210,7 +201,6 @@ export const storeRedditPosts = async (posts) => {
   }
 };
 
-// Alternative function to fetch from multiple subreddits
 export const fetchMultipleSubreddits = async (
   subreddits = ["programming", "technology", "webdev"],
   limit = 5
@@ -223,7 +213,6 @@ export const fetchMultipleSubreddits = async (
       allPosts.push(...posts);
     }
 
-    // Sort by creation time and limit total results
     return allPosts
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       .slice(0, limit * subreddits.length);
