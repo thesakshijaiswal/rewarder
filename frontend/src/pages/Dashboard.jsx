@@ -5,6 +5,7 @@ import { Feed } from "../components/feed";
 import { MdBookmark, MdAccountCircle } from "react-icons/md";
 import { Link, useNavigate } from "react-router";
 import { MdArrowForward } from "react-icons/md";
+import { GiTwoCoins } from "react-icons/gi";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -62,8 +63,11 @@ const Dashboard = () => {
               aria-label="Credits section"
             >
               <h3 className="mb-4 text-xl font-semibold">Credits</h3>
-              <div className="text-3xl font-bold text-indigo-600">
-                {user?.credits}
+              <div className="flex items-center gap-3">
+                <GiTwoCoins className="text-4xl text-amber-500" />
+                <span className="text-3xl font-bold text-indigo-600">
+                  {user?.credits}
+                </span>
               </div>
               <p className="mt-2 text-gray-600">
                 Earn more credits by completing your profile and interacting
