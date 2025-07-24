@@ -135,18 +135,20 @@ const Dashboard = () => {
               >
                 Your Profile
               </h2>
-              <div className="flex flex-col items-start sm:flex-row sm:items-center">
+              <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
                 {user.profile.avatar && (
-                  <img
-                    src={user.profile.avatar}
-                    alt={`${user.profile.name}'s avatar`}
-                    className="mb-4 h-16 w-16 rounded-full object-cover sm:mr-4 sm:mb-0"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src =
-                        "https://via.placeholder.com/150?text=Avatar";
-                    }}
-                  />
+                  <div className="h-16 w-16">
+                    <img
+                      src={user.profile.avatar}
+                      alt={`${user.profile.name}'s avatar`}
+                      className="mb-4 h-full w-full rounded-full object-cover sm:mr-4 sm:mb-0"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src =
+                          "https://via.placeholder.com/150?text=Avatar";
+                      }}
+                    />
+                  </div>
                 )}
                 <div>
                   <h3 className="text-lg font-medium">{user.profile.name}</h3>
