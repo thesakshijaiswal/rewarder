@@ -53,7 +53,7 @@ Rewarder is a full stack web app designed to engage content creators through a g
 
 **Backend:**  
 
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white) ![Express](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white) ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white) ![Mongoose](https://img.shields.io/badge/Mongoose-880000?logo=mongoose&logoColor=white&style=for-the-badge) ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens) ![BcryptJS](https://img.shields.io/badge/BcryptJS-003B6F?style=for-the-badge)![Cloudinary](https://img.shields.io/badge/Cloudinary-003B6F?style=for-the-badge&logo=cloudinary&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white) ![Express](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white) ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white) ![Mongoose](https://img.shields.io/badge/Mongoose-880000?logo=mongoose&logoColor=white&style=for-the-badge) ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens) ![BcryptJS](https://img.shields.io/badge/BcryptJS-003B6F?style=for-the-badge) ![Cloudinary](https://img.shields.io/badge/Cloudinary-646CFF?style=for-the-badge&logo=cloudinary&logoColor=white)
 
 ---
 
@@ -153,6 +153,11 @@ npm run dev
 ## ✨ Preview
 
 <img width="1919" height="959" alt="rewarder-UI" src="https://github.com/user-attachments/assets/7b467ee8-24a8-43a1-8226-ef7cee1a838b" />
+
+## 🌟 PageSpeed Insights
+
+<img width="980" height="545" alt="image" src="https://github.com/user-attachments/assets/e4aff0fc-938f-4062-b4d1-bc672d76ffca" />
+
 
 ## 🛠 Developer
 
