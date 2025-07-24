@@ -1,4 +1,4 @@
-import { fetchTweets, storeTweets } from "./twitter.service.js";
+import { getTweets, storeTweets } from "./twitter.service.js";
 import {
   fetchRedditPosts,
   storeRedditPosts,
@@ -14,7 +14,7 @@ export const refreshFeed = async () => {
       reddit: { success: false, count: 0, error: null },
     };
     try {
-      const tweets = await fetchTweets("tech", 5);
+      const tweets = await getTweets("tech", 10);
       if (tweets && tweets.length > 0) {
         await storeTweets(tweets);
         results.twitter.success = true;
@@ -31,7 +31,7 @@ export const refreshFeed = async () => {
       try {
         redditPosts = await fetchMultipleSubreddits(
           ["programming", "technology", "webdev"],
-          2
+          3
         );
         console.log(
           `Fetched ${
