@@ -16,6 +16,14 @@ Rewarder is a full stack web app designed to engage content creators through a g
 - Infinite scrolling and "Refresh" functionality.
 - Filter by content source (Reddit / Twitter).
 
+### 😎 Smart Twitter API Usage
+
+- Caches tweets locally to minimize API calls and preserve quota
+
+- Tracks monthly usage with auto-reset to avoid accidental overuse
+
+- Falls back to realistic mock tweets when nearing rate limits
+
 ### 🙌 User Actions
 
 - Save, Share, and Report posts.
@@ -41,11 +49,11 @@ Rewarder is a full stack web app designed to engage content creators through a g
 
 **Frontend:**
 
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)  ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white) ![React Router](https://img.shields.io/badge/React_Router-CA4245?logo=reactrouter&logoColor=white&style=for-the-badge) ![Axios](https://img.shields.io/badge/Axios-5A29E4?logo=axios&logoColor=white&style=for-the-badge) ![Recharts](https://img.shields.io/badge/Recharts-888888?style=for-the-badge)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)  ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white) ![React Router](https://img.shields.io/badge/React_Router-CA4245?logo=reactrouter&logoColor=white&style=for-the-badge) ![Axios](https://img.shields.io/badge/Axios-5A29E4?logo=axios&logoColor=white&style=for-the-badge) ![Recharts](https://img.shields.io/badge/Recharts-888888?style=for-the-badge&logo=react&logoColor=white)
 
 **Backend:**  
 
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white) ![Express](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white) ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white) ![Mongoose](https://img.shields.io/badge/Mongoose-880000?logo=mongoose&logoColor=white&style=for-the-badge) ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens) ![BcryptJS](https://img.shields.io/badge/BcryptJS-003B6F?style=for-the-badge)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white) ![Express](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white) ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white) ![Mongoose](https://img.shields.io/badge/Mongoose-880000?logo=mongoose&logoColor=white&style=for-the-badge) ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens) ![BcryptJS](https://img.shields.io/badge/BcryptJS-003B6F?style=for-the-badge)![Cloudinary](https://img.shields.io/badge/Cloudinary-003B6F?style=for-the-badge&logo=cloudinary&logoColor=white)
 
 ---
 
