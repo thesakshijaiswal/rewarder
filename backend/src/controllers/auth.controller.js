@@ -128,10 +128,6 @@ export const getCurrentUser = async (req, res) => {
       });
     }
 
-    const profileCompleted = Boolean(
-      user.profile?.name && user.profile?.bio && user.profile?.avatar
-    );
-
     res.status(200).json({
       success: true,
       user: {
@@ -146,7 +142,7 @@ export const getCurrentUser = async (req, res) => {
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
         profile: user.profile,
-        profileCompleted,
+        profileCompleted: user.profileCompleted,
       },
     });
   } catch (error) {
