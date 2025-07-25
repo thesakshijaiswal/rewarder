@@ -1,4 +1,4 @@
-import { handleError } from "../lib/utils.js";
+import { handleError, awardCredits } from "../lib/utils.js";
 import User from "../models/user.model.js";
 
 export const updateProfile = async (req, res) => {
@@ -28,21 +28,35 @@ export const updateProfile = async (req, res) => {
     };
 
     const wasProfileIncomplete = !user.profileCompleted;
-    const isNowComplete = Boolean(
-      user.profile.name && user.profile.bio && user.profile.avatar
-    );
+    const isNowComplete = Boolean(user.profile.name && user.profile.bio);
+    let creditAwarded = false;
 
     if (wasProfileIncomplete && isNowComplete) {
       user.profileCompleted = true;
+
+      try {
+        await awardCredits(
+          user,
+          10,
+          "profile_completion",
+          "Credits awarded for completing profile"
+        );
+        creditAwarded = true;
+      } catch (creditError) {
+        console.error("Error awarding credits:", creditError);
+      }
     }
 
     await user.save();
 
     res.status(200).json({
       success: true,
-      message: "Profile updated successfully",
+      message: creditAwarded
+        ? "Profile completed! You earned 10 credits!"
+        : "Profile updated successfully",
       profile: user.profile,
       profileCompleted: user.profileCompleted,
+      creditAwarded,
     });
   } catch (error) {
     handleError(res, error, "updateProfile");

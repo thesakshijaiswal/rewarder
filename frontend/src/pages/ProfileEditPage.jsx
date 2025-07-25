@@ -124,15 +124,13 @@ const ProfileEditPage = () => {
 
     try {
       setIsLoading(true);
-      await axiosInstance.put("/profile/update", formData);
+      const response = await axiosInstance.put("/profile/update", formData);
 
-      if (!user.profileCompleted) {
-        await axiosInstance.post("/credits/award/profile");
+      if (response.data.creditAwarded) {
         toast.success("Profile completed! You earned 10 credits!");
       } else {
         toast.success("Profile updated successfully!");
       }
-
       await refreshUser();
       navigate("/dashboard");
     } catch (error) {
